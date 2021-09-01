@@ -10,7 +10,7 @@ function MakeMarble(xPos,yPos,setType,trackNumber){
   this.dragging = false
 
   //boolean for if this marble should consider switching tracks
-  this.switchTracks = false
+  this.canSwitchTracks = false
 
 
   //turn on dragging
@@ -32,12 +32,12 @@ function MakeMarble(xPos,yPos,setType,trackNumber){
 
       //switch to another track if appropriate
       if(activeTracks.length>1){
-        this.switchTracks = true
+        this.canSwitchTracks = true
       }
 
-      if(activeTracks.length==1&&this.switchTracks){
+      if(activeTracks.length==1&&this.canSwitchTracks){
         this.myTrack = tracks.indexOf(activeTracks[0])
-        this.switchTracks = false
+        this.canSwitchTracks = false
       }
 
     }
@@ -46,12 +46,12 @@ function MakeMarble(xPos,yPos,setType,trackNumber){
 
   this.display = function() {
 
-    if(this.switchTracks){
-      fill(0,255,0)
-    }else{
-      fill(0,0,255)
-    }
     noStroke()
+    fill(100,200,255)
+    ellipse(this.x,this.y,15,15)
+    noFill()
+    stroke(255,200)
+    strokeWeight(3)
     ellipse(this.x,this.y,20,20)
 
 
