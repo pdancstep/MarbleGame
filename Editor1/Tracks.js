@@ -17,16 +17,14 @@ function MakeTrack(startX,startY,endX,endY) {
   }
 
   this.display = function() {
-
-    stroke(255,0,0)
-    if(this.near){
-      strokeWeight(5)
-    }else{
-      strokeWeight(1)
-    }
-
+    noFill()
+    stroke(150)
+    strokeWeight(20)
     line(startX,startY,endX,endY)
-  
+
   }
+
+
+
 
 }
