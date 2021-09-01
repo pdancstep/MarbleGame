@@ -5,15 +5,22 @@ trackCoords =
 
 		//vertical bars
 		[100,100,100,700],
+		[200,100,200,700],
 		[300,100,300,700],
+		[400,100,400,700],
 		[500,100,500,700],
+		[600,100,600,700],
 		[700,100,700,700],
+
 
 		//horizontal bars
 		[100,100,700,100],
+		[100,200,700,200],
 		[100,300,700,300],
+		[100,400,700,400],
 		[100,500,700,500],
-		[100,700,700,700],
+		[100,600,700,600],
+		[100,700,700,700]
 
 	]
 
@@ -33,8 +40,9 @@ function setup() {
 	  tracks.push(new MakeTrack(trackCoords[i][0],trackCoords[i][1],trackCoords[i][2],trackCoords[i][3]))
 	}
 
-	//only one marble for now...
+	//Make some marbles
   marbles.push(new MakeMarble(100,400,0,0))
+  marbles.push(new MakeMarble(700,400,0,6))
 
 }
 
