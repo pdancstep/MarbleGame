@@ -31,7 +31,22 @@
             (/ dy dx))))
 
     (define/override (near? x y)
-      (< (distance-from-line-segment x y x1 y1 x2 y2) CLICK-TOLERANCE))
+      (cond
+        ; vertical track
+        [(= x1 x2) (and (< (abs (- x x1)) CLICK-TOLERANCE)
+                        (< (- (min y1 y2) CLICK-TOLERANCE) y)
+                        (< y (+ (max y1 y2) CLICK-TOLERANCE)))]
+        ; point is past left end of track
+        [(< x (min x1 x2)) (if (< x1 x2)
+                               (< (distance x y x1 y1) CLICK-TOLERANCE)
+                               (< (distance x y x2 y2) CLICK-TOLERANCE))]
+        ; point is past right end of track
+        [(< (max x1 x2) x) (if (< x1 x2)
+                               (< (distance x y x2 y2) CLICK-TOLERANCE)
+                               (< (distance x y x1 y1) CLICK-TOLERANCE))]
+        ; point is within domain of track
+        ; this is still not quite right: closest point on line could be outside line segment
+        [else (< (distance-from-line x y x1 y1 x2 y2) CLICK-TOLERANCE)]))
 
     ))
 
