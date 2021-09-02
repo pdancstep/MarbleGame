@@ -1,10 +1,10 @@
 #lang racket
-(require plot "components.rkt" "marble.rkt" "level.rkt" "utils.rkt")
+(require "components.rkt" "level.rkt")
 
 
 (define example1
-  (make-level (list (htrack -2 2 -2)
-                    (rot-track (/ pi 2) pi 3 '*)
+  (make-level (list (make-htrack -2 2 -2)
+                    (make-rot-track (/ pi 2) pi 3 '*)
                     (make-marble 2 -2)
                     (make-marble -3 0))))
 

@@ -30,7 +30,7 @@
 
 ; look for a marble near a given coordinate position
 ; marbles: list? marble%
-; (x,y): coordinate to search
+; (x . y): coordinate to search
 ; returns: index of found marble in marbles, or #f if none found
 (define (nearby-marble marbles x y)
   (define (check-marbles ms x y idx)

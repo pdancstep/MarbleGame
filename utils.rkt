@@ -24,7 +24,7 @@
 ; pythagorean distance between 2 points in the plane
 (define (distance x1 y1 x2 y2) (sqrt (+ (sqr (- x1 x2)) (sqr (- y1 y2)))))
 
-; find the smallest distance from (x,y) to the line segment connecting (x1,y1) with (x2,y2)
+; find smallest distance from (x . y) to the line segment connecting (x1 . y1) with (x2 . y2)
 (define (distance-from-line-segment x y x1 y1 x2 y2)
   (let ([d1 (distance x y x1 y1)]
         [d2 (distance x y x2 y2)]

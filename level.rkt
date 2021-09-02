@@ -1,11 +1,20 @@
 #lang racket
-(require plot "utils.rkt" "components.rkt" "marble.rkt")
+(require plot "utils.rkt" "marble.rkt" "track.rkt")
 (provide make-level)
 
 [plot-x-ticks no-ticks]
 [plot-y-ticks no-ticks]
 [plot-x-label #f]
 [plot-y-label #f]
+
+; given marble m constrained to move along the given set of tracks,
+; return (list a b), where a,b is the position closest to x,y that the marble can move to
+; TODO: implement a better algorithm for this. right now just checks if the point x,y itself
+;       is reasonably close to a track, and moves there or stops accordingly
+(define (closest-allowed-position m x y tracks)
+  (if (ormap (λ (t) (send t near? x y)) tracks)
+      (cons x y)
+      (send m get-coords)))
 
 ; respond to mouse input
 ; tracks: list of track elements in the level
@@ -41,9 +50,9 @@
 
 ; build a level from a list of components
 (define (make-level components)
-  (let* ([tracks (filter (λ (p) (and (pair? p) (eq? (caar p) 'track))) components)]
+  (let* ([tracks (filter (λ (p) (is-a? p track%)) components)]
          [marbles (filter (λ (p) (is-a? p marble%)) components)]
-         [level (plot (cons unit-circle (map cdr tracks))
+         [level (plot (cons unit-circle (map (λ (t) (send t get-render)) tracks))
                       #:x-min PLOT-X-MIN #:x-max PLOT-X-MAX
                       #:y-min PLOT-Y-MIN #:y-max PLOT-Y-MAX)])
     (send level set-mouse-event-callback (build-mouse-handler tracks marbles #f))
