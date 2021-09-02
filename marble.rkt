@@ -23,7 +23,10 @@
     (define/public (warp! x y)
       (set! pos-x x) (set! pos-y y)
       (set! renderer
-            (points `((,x ,y)) #:sym 'fullcircle #:size MARBLE-PIXELS #:color mcolor)))))
+            (points `((,x ,y)) #:sym 'fullcircle #:size MARBLE-PIXELS #:color mcolor)))
+
+    (define/public (near? x y)
+      (< (distance x y pos-x pos-y) CLICK-TOLERANCE))))
 
 ; build a marble at location (x,y)
 (define (make-marble x y #:color [c 'black]) (new marble% [x x] [y y] [type #f] [color c]))
@@ -36,13 +39,9 @@
   (define (check-marbles ms x y idx)
     (if (null? ms)
         #f
-        (let ([m (first ms)]
-              [ms (rest ms)])
-          (match (send m get-coords)
-            [(cons xm ym) (if (< (distance x y xm ym) CLICK-TOLERANCE)
-                              idx
-                              (check-marbles ms x y (add1 idx)))]
-            [_ (check-marbles ms x y (add1 idx))]))))
+        (if (send (first ms) near? x y)
+            idx
+            (check-marbles (rest ms) x y (add1 idx)))))
   (check-marbles marbles x y 0))
 
 ; render a list of marbles as overlay in a given plot
