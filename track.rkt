@@ -4,11 +4,10 @@
 
 (define track%
   (class object%
-    (init type color render)
+    (init type render)
     (super-new) ; required
 
     (define transform type) ; not used yet
-    (define track-color color)
     (define renderer render)
 
     (define/public (near? x y) #f) ; need a specific track type to determine if we're close to a point
@@ -16,8 +15,8 @@
 
 (define linear%
   (class track%
-    (init p1 p2 type color render)
-    (super-new [type type] [color color] [render render])
+    (init p1 p2 type render)
+    (super-new [type type] [render render])
 
     (define x1 (car p1))
     (define y1 (cdr p1))
@@ -38,8 +37,8 @@
 
 (define (make-htrack xmin xmax y [type '+] #:color [c 'lightblue])
   (new linear%
-       [p1 (cons xmin y)] [p2 (cons xmax y)] [type type] [color c]
+       [p1 (cons xmin y)] [p2 (cons xmax y)] [type type]
        [render (lines `((,xmin ,y) (,xmax ,y)) #:width TRACK-PIXELS #:color c)]))
 
 (define (make-rot-track θmin θmax r [type '+] #:color [c 'orange])
-  (new track% [type type] [color c] [render (polar (λ (θ) r) θmin θmax #:width TRACK-PIXELS #:color c)]))
+  (new track% [type type] [render (polar (λ (θ) r) θmin θmax #:width TRACK-PIXELS #:color c)]))
