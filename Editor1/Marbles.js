@@ -47,7 +47,7 @@ function MakeMarble(xPos,yPos,setType,trackNumber){
   this.display = function() {
 
     noStroke()
-    fill(100,200,255)
+    fill(100,300,255)
     ellipse(this.x,this.y,15,15)
     noFill()
     stroke(255,200)

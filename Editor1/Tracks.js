@@ -18,7 +18,7 @@ function MakeTrack(startX,startY,endX,endY) {
 
   this.display = function() {
     noFill()
-    stroke(150)
+    stroke(200)
     strokeWeight(20)
     line(startX,startY,endX,endY)
 
