@@ -35,10 +35,33 @@
 
     ))
 
+(define arc%
+  (class track%
+    (init θmin θmax r type render)
+    (super-new [type type] [render render])
+
+    (define arc-begin θmin)
+    (define arc-end θmax)
+    (define radius r)
+    
+    (define/override (near? x y)
+      (let* ([p (make-rectangular x y)]
+             [r (magnitude p)]
+             [θ (angle p)])
+        (and (< (abs (- radius r)) CLICK-TOLERANCE)
+             (cond
+               [(< θ arc-begin) (< (- arc-begin θ) CLICK-TOLERANCE)]
+               [(< θ arc-end) #t]
+               [else (< (- θ arc-end) CLICK-TOLERANCE)]))))
+    ))
+
+
 (define (make-htrack xmin xmax y [type '+] #:color [c 'lightblue])
   (new linear%
        [p1 (cons xmin y)] [p2 (cons xmax y)] [type type]
        [render (lines `((,xmin ,y) (,xmax ,y)) #:width TRACK-PIXELS #:color c)]))
 
 (define (make-rot-track θmin θmax r [type '+] #:color [c 'orange])
-  (new track% [type type] [render (polar (λ (θ) r) θmin θmax #:width TRACK-PIXELS #:color c)]))
+  (new arc%
+       [θmin θmin] [θmax θmax] [r r] [type type]
+       [render (polar (λ (θ) r) θmin θmax #:width TRACK-PIXELS #:color c)]))
