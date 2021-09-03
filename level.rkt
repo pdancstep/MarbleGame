@@ -1,6 +1,7 @@
 #lang racket
-(require plot "utils.rkt" "marble.rkt" "track.rkt")
-(provide make-level)
+(require plot "utils.rkt" "components.rkt")
+(provide make-level
+         make-marble make-htrack make-vtrack make-rot-track)
 
 [plot-x-ticks no-ticks]
 [plot-y-ticks no-ticks]
@@ -11,8 +12,8 @@
 ; return (a . b), the position closest to (x . y) that the marble can move to
 (define (closest-allowed-position m x y tracks)
   (let* ([current-coords (send m get-coords)]
-         [nearby-tracks (filter (λ (t) (send t near? x y)) tracks)]
-         [possible-moves (map (λ (t) (send t suggest-movement current-coords (cons x y))) nearby-tracks)])
+         [nearby-tracks (filter ((curry near-track?) x y) tracks)]
+         [possible-moves (map ((curry suggest-move) current-coords (cons x y)) nearby-tracks)])
     (if (empty? possible-moves)
         current-coords
         (let* ([dist (λ (p) (if p ; each element of possible-moves is either a point (a . b) or #f
@@ -48,7 +49,7 @@
     [(and (send event dragging?) active-marble)
      (let ([m (list-ref marbles active-marble)])
        (match (closest-allowed-position m x y tracks)
-         [(cons a b) (send m warp! a b)])) ; pull marble to the required position
+         [(cons a b) (warp! m a b)])) ; pull marble to the required position
      (render-marbles level marbles)]
 
     ; nothing to do; just update marble display
@@ -56,9 +57,9 @@
 
 ; build a level from a list of components
 (define (make-level components)
-  (let* ([tracks (filter (λ (p) (is-a? p track%)) components)]
-         [marbles (filter (λ (p) (is-a? p marble%)) components)]
-         [level (plot (cons unit-circle (map (λ (t) (send t get-render)) tracks))
+  (let* ([tracks (filter track? components)]
+         [marbles (filter marble? components)]
+         [level (plot (cons unit-circle (map get-renderer tracks))
                       #:x-min PLOT-X-MIN #:x-max PLOT-X-MAX
                       #:y-min PLOT-Y-MIN #:y-max PLOT-Y-MAX)])
     (send level set-mouse-event-callback (build-mouse-handler tracks marbles #f))
