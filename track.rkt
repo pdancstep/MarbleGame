@@ -11,6 +11,8 @@
     (define renderer render)
 
     (define/public (near? x y) #f) ; need a specific track type to determine if we're close to a point
+    (define/public (suggest-movement source target) target) ; no constraints on movement for generic "track"
+;    (define/public (suggest-movement source target) #f) ; need track type to suggest any movement
     (define/public (get-render) renderer)))
 
 (define linear%

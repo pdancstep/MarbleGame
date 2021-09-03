@@ -8,13 +8,19 @@
 [plot-y-label #f]
 
 ; given marble m constrained to move along the given set of tracks,
-; return (list a b), where a,b is the position closest to x,y that the marble can move to
-; TODO: implement a better algorithm for this. right now just checks if the point x,y itself
-;       is reasonably close to a track, and moves there or stops accordingly
+; return (a . b), the position closest to (x . y) that the marble can move to
 (define (closest-allowed-position m x y tracks)
-  (if (ormap (λ (t) (send t near? x y)) tracks)
-      (cons x y)
-      (send m get-coords)))
+  (let* ([current-coords (send m get-coords)]
+         [nearby-tracks (filter (λ (t) (send t near? x y)) tracks)]
+         [possible-moves (map (λ (t) (send t suggest-movement current-coords (cons x y))) nearby-tracks)])
+    (if (empty? possible-moves)
+        current-coords
+        (let* ([dist (λ (p) (if p ; each element of possible-moves is either a point (a . b) or #f
+                                (distance x y (car p) (cdr p))
+                                +inf.0))]
+               [best-move (argmin dist possible-moves)])
+          (or best-move current-coords)))))
+         
 
 ; respond to mouse input
 ; tracks: list of track elements in the level
