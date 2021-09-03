@@ -7,6 +7,7 @@
                     (make-rot-track (/ pi 2) (* 6/5 pi) 3 '*)
                     (make-marble 2 -2)
                     (make-vtrack 0 -2 3)
+                    (make-rot-track (* 11/6 pi) (* 13/6 pi) 2)
                     (make-marble -3 0))))
 
 example1

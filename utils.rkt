@@ -3,6 +3,7 @@
 (provide unit-circle PLOT-X-MIN PLOT-X-MAX PLOT-Y-MIN PLOT-Y-MAX
          MARBLE-PIXELS TRACK-PIXELS
          CLICK-TOLERANCE
+         normalize-angle
          distance
          distance-from-line)
 
@@ -20,6 +21,11 @@
 ; how close do we need to be to the center of a marble to click it?
 (define CLICK-TOLERANCE 0.05)
 
+(define (normalize-angle θ)
+  (cond
+    [(< θ 0) (normalize-angle (+ θ (* 2 pi)))]
+    [(< (* 2 pi) θ) (normalize-angle (- θ (* 2 pi)))]
+    [else θ]))
 
 ; pythagorean distance between 2 points in the plane
 (define (distance x1 y1 x2 y2) (sqrt (+ (sqr (- x1 x2)) (sqr (- y1 y2)))))

@@ -64,9 +64,9 @@
     (define/override (near? x y)
       (let* ([p (make-rectangular x y)]
              [r (magnitude p)]
-             [θ (angle p)])
+             [θ (normalize-angle (angle p))])
         (and (< (abs (- radius r)) CLICK-TOLERANCE)
-             (cond
+             (cond ; this doesn't work right if the arc passes through θ=2pi
                [(< θ arc-begin) (< (- arc-begin θ) CLICK-TOLERANCE)]
                [(< θ arc-end) #t]
                [else (< (- θ arc-end) CLICK-TOLERANCE)]))))
