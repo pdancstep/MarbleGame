@@ -1,6 +1,6 @@
 #lang racket
 (require plot "utils.rkt")
-(provide track% linear% make-htrack make-rot-track)
+(provide track% make-htrack make-vtrack make-rot-track)
 
 (define track%
   (class object%
@@ -77,6 +77,11 @@
   (new linear%
        [p1 (cons xmin y)] [p2 (cons xmax y)] [type type]
        [render (lines `((,xmin ,y) (,xmax ,y)) #:width TRACK-PIXELS #:color c)]))
+
+(define (make-vtrack x ymin ymax [type '+] #:color [c 'lightblue])
+  (new linear%
+       [p1 (cons x ymin)] [p2 (cons x ymax)] [type type]
+       [render (lines `((,x ,ymin) (,x ,ymax)) #:width TRACK-PIXELS #:color c)]))
 
 (define (make-rot-track θmin θmax r [type '+] #:color [c 'orange])
   (new arc%
