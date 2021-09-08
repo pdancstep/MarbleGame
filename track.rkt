@@ -25,12 +25,17 @@
     (define x2 (car p2))
     (define y2 (cdr p2))
 
-    (define/public (slope)
-      (let ([dy (- y2 y1)]
-            [dx (- x2 x1)])
-        (if (zero? dx)
-            #f
-            (/ dy dx))))
+    (define slope (let ([dy (- y2 y1)]
+                        [dx (- x2 x1)])
+                    (if (zero? dx)
+                        #f
+                        (/ dy dx))))
+    (define intercept (if slope
+                          (- y1 (* x1 slope))
+                          #f))
+
+    (define (as-function x) (+ (* slope x) intercept))
+    (define (as-inverse y) (/ (- y intercept) slope))
 
     (define/override (near? x y)
       (cond
@@ -50,6 +55,27 @@
         ; this is still not quite right: closest point on line could be outside line segment
         [else (< (distance-from-line x y x1 y1 x2 y2) CLICK-TOLERANCE)]))
 
+    ; initial implmentation just pulls to closest point along steeper axis
+    ; may want to refine
+    (define/override (suggest-movement source target)
+      (if (near? (car source) (cdr source))
+          (let ([new-y (cond
+                         [(< (cdr target) (min y1 y2)) (min y1 y2)]
+                         [(< (max y1 y2) (cdr target)) (max y1 y2)]
+                         [else (cdr target)])])
+            (cond
+              ; vertical track
+              [(= x1 x2) (cons x1 new-y)]
+              ; high slope: follow y-coordinate
+              [(<= 1 (abs slope)) (cons (as-inverse new-y) new-y)]
+              ; low slope: follow x-coordinate
+              [else (let ([new-x (cond
+                                   [(< (car target) (min x1 x2)) (min x1 x2)]
+                                   [(< (max x1 x2) (car target)) (max x1 x2)]
+                                   [else (car target)])])
+                      (cons new-x (as-function new-x)))]))
+          ; marble is not near this track at all, so we don't want to propose moving it
+          #f))
     ))
 
 (define arc%

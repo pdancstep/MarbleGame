@@ -39,9 +39,9 @@
   (-> any/c boolean?)
   (is-a? t track%))
 
-(define/contract (near-track? x y t)
-  (-> real? real? track? boolean?)
-  (send t near? x y))
+(define/contract (near-track? p t)
+  (-> (cons/c real? real?) track? boolean?)
+  (send t near? (car p) (cdr p)))
 
 (define/contract (suggest-move source target track)
   (-> (cons/c real? real?) (cons/c real? real?) track?

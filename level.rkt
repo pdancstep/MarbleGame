@@ -1,7 +1,6 @@
 #lang racket
 (require plot "utils.rkt" "components.rkt")
-(provide make-level
-         make-marble make-htrack make-vtrack make-rot-track)
+(provide make-level)
 
 [plot-x-ticks no-ticks]
 [plot-y-ticks no-ticks]
@@ -11,8 +10,8 @@
 ; given marble m constrained to move along the given set of tracks,
 ; return (a . b), the position closest to (x . y) that the marble can move to
 (define (closest-allowed-position m x y tracks)
-  (let* ([current-coords (send m get-coords)]
-         [nearby-tracks (filter ((curry near-track?) x y) tracks)]
+  (let* ([current-coords (marble-coords m)]
+         [nearby-tracks (filter ((curry near-track?) current-coords) tracks)]
          [possible-moves (map ((curry suggest-move) current-coords (cons x y)) nearby-tracks)])
     (if (empty? possible-moves)
         current-coords
