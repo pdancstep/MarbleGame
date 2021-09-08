@@ -8,6 +8,7 @@
                     (make-marble 2 -2)
                     (make-vtrack 0 -2 3)
                     (make-rot-track (* 11/6 pi) (* 13/6 pi) 2)
-                    (make-marble -3 0))))
+                    (make-marble -3 0)
+                    (make-linear-track 0 -1 2 0))))
 
 example1

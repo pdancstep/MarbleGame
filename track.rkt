@@ -1,6 +1,6 @@
 #lang racket
 (require plot "utils.rkt")
-(provide track% make-htrack make-vtrack make-rot-track)
+(provide track% make-htrack make-vtrack make-linear-track make-rot-track)
 
 (define track%
   (class object%
@@ -95,7 +95,7 @@
     (define/override (near? x y)
       (let* ([p (make-rectangular x y)]
              [r (magnitude p)]
-             [θ (normalize-angle (angle p))])
+             [θ (if (zero? r) 0 (normalize-angle (angle p)))])
         (and (< (abs (- radius r)) CLICK-TOLERANCE)
              (cond ; this doesn't work right if the arc passes through θ=2pi
                [(< θ arc-begin) (< (- arc-begin θ) CLICK-TOLERANCE)]
@@ -125,6 +125,12 @@
   (new linear%
        [p1 (cons x ymin)] [p2 (cons x ymax)] [type type]
        [render (lines `((,x ,ymin) (,x ,ymax)) #:width TRACK-PIXELS #:color c)]))
+
+(define (make-linear-track x1 y1 x2 y2 [type '+] #:color [c 'lightblue])
+  (new linear%
+       [p1 (cons x1 y1)] [p2 (cons x2 y2)] [type type]
+       [render (lines `((,x1 ,y1) (,x2 ,y2)) #:width TRACK-PIXELS #:color c)]))
+
 
 (define (make-rot-track θmin θmax r [type '+] #:color [c 'orange])
   (new arc%

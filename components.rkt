@@ -1,7 +1,7 @@
 #lang racket
 (require plot "marble.rkt" "track.rkt")
 
-(provide make-marble make-htrack make-vtrack make-rot-track
+(provide make-marble make-htrack make-vtrack make-linear-track make-rot-track
          marble? warp! marble-coords nearby-marble
          track? near-track? suggest-move
          get-renderer render-marbles)
