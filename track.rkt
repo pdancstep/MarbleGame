@@ -86,6 +86,11 @@
     (define arc-begin θmin)
     (define arc-end θmax)
     (define radius r)
+
+    (define cart-begin (let ([p (make-polar radius arc-begin)])
+                         (cons (real-part p) (imag-part p))))
+    (define cart-end (let ([p (make-polar radius arc-end)])
+                         (cons (real-part p) (imag-part p))))
     
     (define/override (near? x y)
       (let* ([p (make-rectangular x y)]
@@ -96,6 +101,18 @@
                [(< θ arc-begin) (< (- arc-begin θ) CLICK-TOLERANCE)]
                [(< θ arc-end) #t]
                [else (< (- θ arc-end) CLICK-TOLERANCE)]))))
+
+    ; rough implementation; doesn't handle arcs through θ=2pi well, and can warp across opposite sides of the arc
+    (define/override (suggest-movement source target)
+      (if (near? (car source) (cdr source))
+          (let ([θ (normalize-angle (angle (make-rectangular (car target) (cdr target))))])
+            (cond
+              [(< θ arc-begin) cart-begin]
+              [(< arc-end θ) cart-end]
+              [else (let ([p (make-polar radius θ)])
+                      (cons (real-part p) (imag-part p)))]))
+          ; marble is not near this track at all, so we don't want to propose moving it
+          #f))
     ))
 
 
