@@ -5,7 +5,8 @@
          CLICK-TOLERANCE
          normalize-angle
          distance
-         distance-from-line)
+         distance-from-line
+         angle-in-degrees)
 
 
 (define unit-circle (polar (λ (θ) 1) #:color 'black))
@@ -38,3 +39,7 @@
         [area (abs (- (* (- x2 x1) (- y1 y)) (* (- x1 x) (- y2 y1))))])
     (/ area length)))
 
+; angle of a given coordinate in degrees, as a string. use only for printing user-friendly output
+(define (angle-in-degrees x y)
+  (string-append (number->string (inexact->exact (round (* (/ 180 pi) (normalize-angle (angle (make-rectangular x y)))))))
+                 "°"))

@@ -37,7 +37,9 @@
            ; if so, make that marble the active marble
            (send level set-mouse-event-callback (build-mouse-handler tracks marbles m))
            ; if not, make sure there is no active marble or track
-           (send level set-mouse-event-callback (build-mouse-handler tracks marbles #f))))]
+           (begin
+             (send level set-mouse-event-callback (build-mouse-handler tracks marbles #f))
+             (send level set-overlay-renderers (list (point-label (list x y) (angle-in-degrees x y)))))))]
     
     ; mouse released: make sure marble display is current and disable active marble
     [(send event button-up? 'left)
