@@ -95,7 +95,16 @@
     (define/override (near? x y)
       (let* ([p (make-rectangular x y)]
              [r (magnitude p)]
-             [θ (if (zero? r) 0 (normalize-angle (angle p)))])
+             
+             ;added condition: if θmax is greater than 2pi, and cursor angle is greater than zero, add 2pi to angle
+             [θ (cond
+                  [(zero? r) 0]
+                  [(and ((< (* 2 pi) arc-end)(< 0 (angle p))) (normalize-angle (+ (angle p) (* 2 pi))))]
+                  [else (normalize-angle (angle p))])])
+
+             ;old defintion of θ
+             ;[θ (if (zero? r) 0 (normalize-angle (angle p)))])
+
         (and (< (abs (- radius r)) CLICK-TOLERANCE)
              (cond ; this doesn't work right if the arc passes through θ=2pi
                [(< θ arc-begin) (< (- arc-begin θ) CLICK-TOLERANCE)]

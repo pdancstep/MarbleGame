@@ -28,6 +28,7 @@
     [(< (* 2 pi) θ) (normalize-angle (- θ (* 2 pi)))]
     [else θ]))
 
+
 ; pythagorean distance between 2 points in the plane
 (define (distance x1 y1 x2 y2) (sqrt (+ (sqr (- x1 x2)) (sqr (- y1 y2)))))
 
@@ -41,5 +42,5 @@
 
 ; angle of a given coordinate in degrees, as a string. use only for printing user-friendly output
 (define (angle-in-degrees x y)
-  (string-append (number->string (inexact->exact (round (* (/ 180 pi) (normalize-angle (angle (make-rectangular x y)))))))
+  (string-append (number->string (inexact->exact (round (* (/ 180 pi) (angle (make-rectangular x y))))))
                  "°"))

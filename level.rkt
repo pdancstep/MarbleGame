@@ -1,5 +1,5 @@
 #lang racket
-(require plot "utils.rkt" "components.rkt")
+(require plot "utils.rkt" "components.rkt" )
 (provide make-level)
 
 [plot-x-ticks no-ticks]
