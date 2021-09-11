@@ -42,5 +42,5 @@
 
 ; angle of a given coordinate in degrees, as a string. use only for printing user-friendly output
 (define (angle-in-degrees x y)
-  (string-append (number->string (inexact->exact (round (* (/ 180 pi) (angle (make-rectangular x y))))))
+  (string-append (number->string (inexact->exact (round (* (/ 180 pi) (normalize-angle (angle (make-rectangular x y)))))))
                  "°"))
