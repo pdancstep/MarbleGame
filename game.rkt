@@ -3,14 +3,14 @@
 
 
 (define example1
-  (make-level (list ;(make-htrack -2 2 -2)
-                    ;(make-rot-track (/ pi 2) (* 6/5 pi) 3 '*)
-                    ;(make-marble 2 -2)
-                    ;(make-vtrack 0 -2 3)
+  (make-level (list (make-htrack -2 2 -2)
+                    (make-rot-track (/ pi 2) (* 6/5 pi) 3 '*)
+                    (make-marble 2 -2)
+                    (make-vtrack 0 -2 3)
 
                     (make-marble 0 -2)
-                    (make-rot-track (* 3/2 pi) (* 5/2 pi) 2))))
+                    (make-rot-track (* 7/4 pi) (* 9/4 pi) 2)
                     
-                    ;(make-linear-track 0 -1 2 0))))
+                    (make-linear-track 0 -1 2 0))))
 
 example1

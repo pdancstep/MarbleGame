@@ -95,37 +95,23 @@
     (define/override (near? x y)
       (let* ([p (make-rectangular x y)]
              [r (magnitude p)]
-             
-             ;added condition: if θmax is greater than 2pi, and cursor angle is greater than zero, add 2pi to cursor angle
              [θ (cond
                   [(zero? r) 0]
-                  [(and (< (* 2 pi) arc-end) (< 0 (angle p))) (+ (angle p) (* 2 pi))]
+                  [(and (< (* 2 pi) arc-end) (<= 0 (angle p))) (+ (angle p) (* 2 pi))]
                   [else (normalize-angle (angle p))])])
 
-             ;old defintion of θ
-             ;[θ (if (zero? r) 0 (normalize-angle (angle p)))])
 
         (and (< (abs (- radius r)) CLICK-TOLERANCE)
-             (cond ; this doesn't work right if the arc passes through θ=2pi
+             (cond 
                [(< θ arc-begin) (< (- arc-begin θ) CLICK-TOLERANCE)]
                [(< θ arc-end) #t]
                [else (< (- θ arc-end) CLICK-TOLERANCE)]))))
 
-    ; rough implementation; doesn't handle arcs through θ=2pi well, and can warp across opposite sides of the arc
     (define/override (suggest-movement source target)
       (if (near? (car source) (cdr source))
           (let* ([p (make-rectangular (car target) (cdr target))]
-                 [θ (if (and (< (* 2 pi) arc-end) (< 0 (angle p))) (+ (angle p) (* 2 pi))
+                 [θ (if (and (< (* 2 pi) arc-end) (<= 0 (angle p))) (+ (angle p) (* 2 pi))
                         (normalize-angle (angle p)))])
-
-
-          
-          
-          ;old definition of θ
-          ;(let ([θ (normalize-angle (angle (make-rectangular (car target) (cdr target))))])
-
-
-
             (cond
               [(< θ arc-begin) cart-begin]
               [(< arc-end θ) cart-end]
