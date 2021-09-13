@@ -49,8 +49,13 @@
     ; mouse is being dragged: update position of active marble
     [(and (send event dragging?) active-marble)
      (let ([m (list-ref marbles active-marble)])
-       (match (closest-allowed-position m x y tracks)
-         [(cons a b) (warp! m a b)])) ; pull marble to the required position
+       (unless (send m follower?)
+         (match (closest-allowed-position m x y tracks)
+           [(cons a b) (warp! m a b)])) ; pull marble to the required position
+       (when (send m driver?)
+         (map (λ (follow) (if (send m drive-pair? follow)
+                              follow ; should do the actual driving here and return moved marble
+                              follow)) marbles)))
      (render-marbles level marbles)]
 
     ; nothing to do; just update marble display
