@@ -53,9 +53,11 @@
          (match (closest-allowed-position m x y tracks)
            [(cons a b) (warp! m a b)])) ; pull marble to the required position
        (when (send m driver?)
+         (let* ([delta-x (car(send m get-offset!))]
+                [delta-y (cdr(send m get-offset!))])
          (map (λ (follow) (if (send m drive-pair? follow)
-                              follow ; should do the actual driving here and return moved marble
-                              follow)) marbles)))
+                              (send follow follow! delta-x delta-y) ; should do the actual driving here and return moved marble
+                              follow)) marbles))))
      (render-marbles level marbles)]
 
     ; nothing to do; just update marble display

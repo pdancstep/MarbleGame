@@ -11,6 +11,8 @@
     ; fields
     (define pos-x x)
     (define pos-y y)
+    (define anchor-x x)
+    (define anchor-y y)
     (define mtype type)
     (define mcolor color)
     (define renderer (points `((,x ,y)) #:sym 'fullcircle #:size MARBLE-PIXELS #:color mcolor))
@@ -25,6 +27,14 @@
       (set! pos-x x) (set! pos-y y)
       (set! renderer
             (points `((,x ,y)) #:sym 'fullcircle #:size MARBLE-PIXELS #:color mcolor)))
+
+    (define/public (get-offset!)
+      (cons (- pos-x anchor-x)(- pos-y anchor-y)))
+    
+    (define/public (follow! x y)
+      (set! pos-x (+ anchor-x x)) (set! pos-y (+ anchor-y y))
+      (set! renderer
+            (points `((,pos-x ,pos-y)) #:sym 'fullcircle #:size MARBLE-PIXELS #:color mcolor)))
 
     (define/public (near? x y)
       (< (distance x y pos-x pos-y) CLICK-TOLERANCE))
