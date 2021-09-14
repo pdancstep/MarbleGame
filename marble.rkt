@@ -23,19 +23,12 @@
     (define/public (get-render)
       renderer)
 
-    (define/public (warp! x y)
-      (set! pos-x x) (set! pos-y y)
-      (set! renderer
-            (points `((,x ,y)) #:sym 'fullcircle #:size MARBLE-PIXELS #:color mcolor)))
+    (define/public (move-to p)
+      (new marble% [x (car p)] [y (cdr p)] [type mtype] [color mcolor]))
 
-    (define/public (get-offset!)
-      (cons (- pos-x anchor-x)(- pos-y anchor-y)))
+    (define/public (move-by p [oper +])
+      (new marble% [x (oper pos-x (car p))] [y (oper pos-y (cdr p))] [type mtype] [color mcolor]))
     
-    (define/public (follow! x y)
-      (set! pos-x (+ anchor-x x)) (set! pos-y (+ anchor-y y))
-      (set! renderer
-            (points `((,pos-x ,pos-y)) #:sym 'fullcircle #:size MARBLE-PIXELS #:color mcolor)))
-
     (define/public (near? x y)
       (< (distance x y pos-x pos-y) CLICK-TOLERANCE))
 

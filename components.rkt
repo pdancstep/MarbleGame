@@ -3,7 +3,7 @@
 
 (provide make-marble make-driver make-follower
          make-htrack make-vtrack make-linear-track make-rot-track
-         marble? warp! marble-coords nearby-marble
+         marble? marble-coords nearby-marble
          track? near-track? suggest-move
          get-renderer render-marbles)
 
@@ -12,10 +12,6 @@
 (define/contract (marble? m)
   (-> any/c boolean?)
   (is-a? m marble%))
-
-(define/contract (warp! m x y)
-  (-> marble? real? real? any/c)
-  (send m warp! x y))
 
 (define/contract (marble-coords m)
   (-> marble? (cons/c real? real?))

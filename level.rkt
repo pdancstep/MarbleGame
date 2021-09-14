@@ -46,19 +46,23 @@
      (render-marbles level marbles)
      (send level set-mouse-event-callback (build-mouse-handler tracks marbles #f))]
     
-    ; mouse is being dragged: update position of active marble
+    ; mouse is being dragged: update position of active marble and any marbles following it
     [(and (send event dragging?) active-marble)
-     (let ([m (list-ref marbles active-marble)])
-       (unless (send m follower?)
-         (match (closest-allowed-position m x y tracks)
-           [(cons a b) (warp! m a b)])) ; pull marble to the required position
-       (when (send m driver?)
-         (let* ([delta-x (car(send m get-offset!))]
-                [delta-y (cdr(send m get-offset!))])
-         (map (λ (follow) (if (send m drive-pair? follow)
-                              (send follow follow! delta-x delta-y) ; should do the actual driving here and return moved marble
-                              follow)) marbles))))
-     (render-marbles level marbles)]
+     (let* ([m (list-ref marbles active-marble)]
+            [old-coords (send m get-coords)]
+            [new-coords (if (send m follower?)
+                            old-coords
+                            (closest-allowed-position m x y tracks))]
+            [delta (offset old-coords new-coords)]
+            [new-marbles (list-set marbles active-marble (send m move-to new-coords))]
+            [final-marbles (if (send m driver?)
+                               (map (λ (follow) (if (send m drive-pair? follow)
+                                                    (send follow move-by delta)
+                                                    follow))
+                                    new-marbles)
+                               new-marbles)])
+       (send level set-mouse-event-callback (build-mouse-handler tracks final-marbles active-marble))
+       (render-marbles level final-marbles))]
 
     ; nothing to do; just update marble display
     [else (render-marbles level marbles)]))
