@@ -57,7 +57,12 @@
             [new-marbles (list-set marbles active-marble (send m move-to new-coords))]
             [final-marbles (if (send m driver?)
                                (map (λ (follow) (if (send m drive-pair? follow)
-                                                    (send follow move-by delta)
+                                                    (let* ([follow-coords (send follow get-coords)]
+                                                           [oper +] ; TODO get actual operation from track type
+                                                           [target-coords (transform follow-coords delta oper)]
+                                                           [new-coords (closest-allowed-position follow (car target-coords) (cdr target-coords) tracks)]
+                                                           )
+                                                      (send follow move-to new-coords))
                                                     follow))
                                     new-marbles)
                                new-marbles)])

@@ -4,6 +4,7 @@
          MARBLE-PIXELS TRACK-PIXELS
          CLICK-TOLERANCE
          normalize-angle
+         transform
          offset
          distance
          distance-from-line
@@ -29,6 +30,13 @@
     [(< (* 2 pi) θ) (normalize-angle (- θ (* 2 pi)))]
     [else θ]))
 
+; perform the given operation on the two points (as pairs of complex coordinates)
+(define (transform p q oper)
+  (let* ([zp (make-rectangular (car p) (cdr p))]
+         [zq (make-rectangular (car q) (cdr q))]
+         [z (oper zp zq)])
+    (cons (real-part z) (imag-part z))))
+  
 ; vector of the translation describing the movement of a point from a to b
 ; in other words, just the difference of those points
 ; a and b should both be pairs of numbers (real and complex parts)
