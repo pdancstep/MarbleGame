@@ -5,7 +5,6 @@
          CLICK-TOLERANCE
          normalize-angle
          transform
-         offset
          distance
          distance-from-line
          angle-in-degrees)
@@ -37,12 +36,6 @@
          [z (oper zp zq)])
     (cons (real-part z) (imag-part z))))
   
-; vector of the translation describing the movement of a point from a to b
-; in other words, just the difference of those points
-; a and b should both be pairs of numbers (real and complex parts)
-(define (offset a b)
-  (cons (- (car b) (car a)) (- (cdr b) (cdr a))))
-
 ; pythagorean distance between 2 points in the plane
 (define (distance x1 y1 x2 y2) (sqrt (+ (sqr (- x1 x2)) (sqr (- y1 y2)))))
 

@@ -10,7 +10,15 @@
     (define transform type) ; operation movement along this track represents (currently, + or *)
     (define renderer render)
 
-    (define/public (get-type) transform)
+    (define/public (get-oper)
+      (match transform
+        ['+ +]
+        ['* *]))
+    
+    (define/public (get-inverse)
+      (match transform
+        ['+ -]
+        ['* /]))
     (define/public (near? x y) #f) ; need a specific track type to determine if we're close to a point
     (define/public (suggest-movement source target) #f) ; need track type to suggest any movement
     (define/public (get-render) renderer)))
@@ -122,23 +130,23 @@
     ))
 
 
-(define (make-htrack xmin xmax y [type +] #:color [c 'lightblue])
+(define (make-htrack xmin xmax y [type' +] #:color [c 'lightblue])
   (new linear%
        [p1 (cons xmin y)] [p2 (cons xmax y)] [type type]
        [render (lines `((,xmin ,y) (,xmax ,y)) #:width TRACK-PIXELS #:color c)]))
 
-(define (make-vtrack x ymin ymax [type +] #:color [c 'lightblue])
+(define (make-vtrack x ymin ymax [type '+] #:color [c 'lightblue])
   (new linear%
        [p1 (cons x ymin)] [p2 (cons x ymax)] [type type]
        [render (lines `((,x ,ymin) (,x ,ymax)) #:width TRACK-PIXELS #:color c)]))
 
-(define (make-linear-track x1 y1 x2 y2 [type +] #:color [c 'lightblue])
+(define (make-linear-track x1 y1 x2 y2 [type '+] #:color [c 'lightblue])
   (new linear%
        [p1 (cons x1 y1)] [p2 (cons x2 y2)] [type type]
        [render (lines `((,x1 ,y1) (,x2 ,y2)) #:width TRACK-PIXELS #:color c)]))
 
 
-(define (make-rot-track θmin θmax r [type *] #:color [c 'orange])
+(define (make-rot-track θmin θmax r [type '*] #:color [c 'orange])
   (new arc%
        [θmin θmin] [θmax θmax] [r r] [type type]
        [render (polar (λ (θ) r) θmin θmax #:width TRACK-PIXELS #:color c)]))
