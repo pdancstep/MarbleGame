@@ -26,9 +26,6 @@
     (define/public (move-to p)
       (new marble% [x (car p)] [y (cdr p)] [type mtype] [color mcolor]))
 
-    (define/public (move-by p [oper +])
-      (new marble% [x (oper pos-x (car p))] [y (oper pos-y (cdr p))] [type mtype] [color mcolor]))
-    
     (define/public (near? x y)
       (< (distance x y pos-x pos-y) CLICK-TOLERANCE))
 
