@@ -41,23 +41,9 @@
                     (make-follower (* 2.5 (cos (* 1.25 pi))) (* 2.5 (sin (* 1.25 pi))) 'hello))))
 
 (define example4
-  (make-level (list (make-htrack -3 3 3)
-                    (make-htrack -3 3 2)
-                    (make-htrack -3 3 1)
-                    (make-htrack -3 3 0)
-                    (make-htrack -3 3 -1)
-                    (make-htrack -3 3 -2)
-                    (make-htrack -3 3 -3)
-
-                    (make-vtrack 3 -3 3)
-                    (make-vtrack 2 -3 3)
-                    (make-vtrack 1 -3 3)
-                    (make-vtrack 0 -3 3)
-                    (make-vtrack -1 -3 3)
-                    (make-vtrack -2 -3 3)
-                    (make-vtrack -3 -3 3)
-
-                    (make-driver 0 0 'hello))))
+  (make-level (cons (make-driver 0 0 'hello)
+                    (flatten (for/list ([n '(-3 -2 -1 0 1 2 3)])
+                               (list (make-htrack -3 3 n) (make-vtrack n -3 3)))))))
 
 
 ;divide arcs into segments?
