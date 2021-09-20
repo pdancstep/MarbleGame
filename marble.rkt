@@ -5,32 +5,27 @@
 
 (define marble%
   (class object%
-    (init x y type color)
+    (init z type color)
     (super-new) ; required
 
     ; fields
-    (define pos-x x)
-    (define pos-y y)
-    (define anchor-x x)
-    (define anchor-y y)
+    (define x (real-part z))
+    (define y (imag-part z))
     (define mtype type)
     (define mcolor color)
     (define renderer (points `((,x ,y)) #:sym 'fullcircle #:size MARBLE-PIXELS #:color mcolor))
     
-    (define/public (get-coords)
-      (cons pos-x pos-y))
+    (define/public (get-coords) (make-rectangular x y))
 
-    (define/public (get-render)
-      renderer)
+    (define/public (get-render) renderer)
 
     (define/public (move-to p)
-      (new marble% [x (car p)] [y (cdr p)] [type mtype] [color mcolor]))
+      (new marble% [z p] [type mtype] [color mcolor]))
 
-    (define/public (near? x y)
-      (< (distance x y pos-x pos-y) CLICK-TOLERANCE))
+    (define/public (near? z)
+      (< (distance (real-part z) (imag-part z) x y) CLICK-TOLERANCE))
 
-    (define/public (get-type)
-      mtype)
+    (define/public (get-type) mtype)
     
     ; methods for driver/follower marble type
     (define/public (driver?)
@@ -47,10 +42,10 @@
            (equal? (cdr mtype) (cdr (send m get-type)))))))
 
 ; build a marble at location (x,y)
-(define (make-marble x y #:color [c 'black]) (new marble% [x x] [y y] [type #f] [color c]))
+(define (make-marble x y #:color [c 'black]) (new marble% [z (make-rectangular x y)] [type #f] [color c]))
 
 ; build a driver marble at location (x,y) with given label
-(define (make-driver x y label #:color [c 'darkgreen]) (new marble% [x x] [y y] [type (cons 'driver label)] [color c]))
+(define (make-driver x y label #:color [c 'darkgreen]) (new marble% [z (make-rectangular x y)] [type (cons 'driver label)] [color c]))
 
 ; build a follower marble at location (x,y) with given label
-(define (make-follower x y label #:color [c 'black]) (new marble% [x x] [y y] [type (cons 'follower label)] [color c]))
+(define (make-follower x y label #:color [c 'black]) (new marble% [z (make-rectangular x y)] [type (cons 'follower label)] [color c]))

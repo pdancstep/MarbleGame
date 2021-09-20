@@ -7,20 +7,19 @@
 [plot-x-label #f]
 [plot-y-label #f]
 
-; given marble m constrained to move along the given set of tracks,
-; return a pair containing:
-; (a . b), the position closest to (x . y) that the marble can move to
+; given marble m constrained to move along the given set of tracks, return a pair containing:
+; the position closest to z that the marble can move to
 ; and the track along which that movement takes place
-(define (closest-allowed-position m x y tracks)
+(define (closest-allowed-position m z tracks)
   (let* ([current-coords (marble-coords m)]
          [nearby-tracks (filter ((curry near-track?) current-coords) tracks)]
-         [possible-moves (map (λ (t) (cons (suggest-move current-coords (cons x y) t) t)) nearby-tracks)])
+         [possible-moves (map (λ (t) (cons (suggest-move current-coords z t) t)) nearby-tracks)])
     (if (empty? possible-moves)
         (cons current-coords #f)
         (let* ([dist (λ (info)
                        (let ([p (car info)])
-                         (if p ; the car of each element of possible-moves is either a point (a . b) or #f
-                             (distance x y (car p) (cdr p))
+                         (if p ; the car of each element of possible-moves is either a point (complex number) or #f
+                             (distance (real-part z) (imag-part z) (real-part p) (imag-part p))
                              +inf.0)))])
           (argmin dist possible-moves)))))
          
@@ -34,15 +33,13 @@
   (cond
     ; clicked on something
     [(send event button-down? 'left)
-     (let ([m (nearby-marble marbles x y)])
+     (let ([m (nearby-marble marbles (make-rectangular x y))])
        ; does the clicked location correspond to a marble?
        (if m
            ; if so, make that marble the active marble
            (send level set-mouse-event-callback (build-mouse-handler tracks marbles m))
            ; if not, make sure there is no active marble or track
-           (begin
-             (send level set-mouse-event-callback (build-mouse-handler tracks marbles #f))
-             (send level set-overlay-renderers (list (point-label (list x y) (angle-in-degrees x y)))))))]
+           (send level set-mouse-event-callback (build-mouse-handler tracks marbles #f))))]
     
     ; mouse released: make sure marble display is current and disable active marble
     [(send event button-up? 'left)
@@ -50,21 +47,21 @@
      (send level set-mouse-event-callback (build-mouse-handler tracks marbles #f))]
     
     ; mouse is being dragged: update position of active marble and any marbles following it
-    [(and (send event dragging?) active-marble)
+    [(and (send event dragging?) x y active-marble)
      (let* ([m (list-ref marbles active-marble)]
             [old-coords (send m get-coords)]
             [new-pos-info (if (send m follower?)
                               (cons old-coords #f)
-                              (closest-allowed-position m x y tracks))]
+                              (closest-allowed-position m (make-rectangular x y) tracks))]
             [new-coords (car new-pos-info)]
             [track-used (cdr new-pos-info)]
             [new-marbles (list-set marbles active-marble (send m move-to new-coords))]
             [final-marbles (if (send m driver?)
-                               (let ([delta (transform new-coords old-coords (send track-used get-inverse))]) ; watch out for divide-by-0
+                               (let ([delta ((send track-used get-inverse) new-coords old-coords)]) ; watch out for divide-by-0
                                  (map (λ (follow) (if (send m drive-pair? follow)
                                                       (let* ([follow-coords (send follow get-coords)]
-                                                             [target-coords (transform follow-coords delta (send track-used get-oper))]
-                                                             [new-coords (car (closest-allowed-position follow (car target-coords) (cdr target-coords) tracks))])
+                                                             [target-coords ((send track-used get-oper) follow-coords delta)]
+                                                             [new-coords (car (closest-allowed-position follow target-coords tracks))])
                                                         (send follow move-to new-coords))
                                                       follow))
                                       new-marbles))

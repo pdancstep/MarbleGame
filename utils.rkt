@@ -4,7 +4,6 @@
          MARBLE-PIXELS TRACK-PIXELS
          CLICK-TOLERANCE
          normalize-angle
-         transform
          distance
          distance-from-line
          angle-in-degrees)
@@ -21,7 +20,7 @@
 
 
 ; how close do we need to be to the center of a marble to click it?
-(define CLICK-TOLERANCE 0.05)
+(define CLICK-TOLERANCE 0.08)
 
 (define (normalize-angle θ)
   (cond
@@ -29,13 +28,6 @@
     [(< (* 2 pi) θ) (normalize-angle (- θ (* 2 pi)))]
     [else θ]))
 
-; perform the given operation on the two points (as pairs of complex coordinates)
-(define (transform p q oper)
-  (let* ([zp (make-rectangular (car p) (cdr p))]
-         [zq (make-rectangular (car q) (cdr q))]
-         [z (oper zp zq)])
-    (cons (real-part z) (imag-part z))))
-  
 ; pythagorean distance between 2 points in the plane
 (define (distance x1 y1 x2 y2) (sqrt (+ (sqr (- x1 x2)) (sqr (- y1 y2)))))
 

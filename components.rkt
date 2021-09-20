@@ -14,21 +14,21 @@
   (is-a? m marble%))
 
 (define/contract (marble-coords m)
-  (-> marble? (cons/c real? real?))
+  (-> marble? complex?)
   (send m get-coords))
 
 ; look for a marble near a given coordinate position
 ; marbles: list? marble%
 ; (x . y): coordinate to search
 ; returns: index of found marble in marbles, or #f if none found
-(define (nearby-marble marbles x y)
-  (define (check-marbles ms x y idx)
+(define (nearby-marble marbles z)
+  (define (check-marbles ms z idx)
     (if (null? ms)
         #f
-        (if (send (first ms) near? x y)
+        (if (send (first ms) near? z)
             idx
-            (check-marbles (rest ms) x y (add1 idx)))))
-  (check-marbles marbles x y 0))
+            (check-marbles (rest ms) z (add1 idx)))))
+  (check-marbles marbles z 0))
 
 ;;;; track helpers ;;;;
 
@@ -36,13 +36,12 @@
   (-> any/c boolean?)
   (is-a? t track%))
 
-(define/contract (near-track? p t)
-  (-> (cons/c real? real?) track? boolean?)
-  (send t near? (car p) (cdr p)))
+(define/contract (near-track? z t)
+  (-> complex? track? boolean?)
+  (send t near? z))
 
 (define/contract (suggest-move source target track)
-  (-> (cons/c real? real?) (cons/c real? real?) track?
-      (or/c (cons/c real? real?) false?))
+  (-> complex? complex? track? (or/c complex? false?))
   (send track suggest-movement source target))
 
 ;;;; marble + track helpers ;;;;
