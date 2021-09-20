@@ -40,7 +40,32 @@
                     (make-driver (* 2.5 (cos (* .625 pi))) (* 2.5 (sin (* .625 pi))) 'hello)
                     (make-follower (* 2.5 (cos (* 1.25 pi))) (* 2.5 (sin (* 1.25 pi))) 'hello))))
 
+(define example4
+  (make-level (list (make-htrack -3 3 3)
+                    (make-htrack -3 3 2)
+                    (make-htrack -3 3 1)
+                    (make-htrack -3 3 0)
+                    (make-htrack -3 3 -1)
+                    (make-htrack -3 3 -2)
+                    (make-htrack -3 3 -3)
 
-                    
+                    (make-vtrack 3 -3 3)
+                    (make-vtrack 2 -3 3)
+                    (make-vtrack 1 -3 3)
+                    (make-vtrack 0 -3 3)
+                    (make-vtrack -1 -3 3)
+                    (make-vtrack -2 -3 3)
+                    (make-vtrack -3 -3 3)
 
-example1(* 2.5 (cos (* 1.25 pi))) (* 2.5 (sin (* 1.25 pi)))
+                    (make-driver 0 0 'hello))))
+
+
+;divide arcs into segments?
+(define example5
+  (make-level (list (make-rot-track (* 3/4 pi) pi 3)
+                    (make-rot-track pi (* 2 pi) 3)
+                    (make-rot-track (* 2 pi) (* 9/4 pi) 3)
+
+                    (make-driver 0 -3 'hello))))
+
+example5
