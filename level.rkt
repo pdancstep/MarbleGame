@@ -74,8 +74,9 @@
 
 ; build a level from a list of components
 (define (make-level components)
-  (let* ([tracks (filter track? components)]
-         [marbles (filter marble? components)]
+  (let* ([pieces (flatten components)]
+         [tracks (filter track? pieces)]
+         [marbles (filter marble? pieces)]
          [level (plot (cons unit-circle (map get-renderer tracks))
                       #:x-min PLOT-X-MIN #:x-max PLOT-X-MAX
                       #:y-min PLOT-Y-MIN #:y-max PLOT-Y-MAX)])

@@ -48,9 +48,7 @@
 
 ;divide arcs into segments?
 (define example5
-  (make-level (list (make-rot-track (* 3/4 pi) pi 3)
-                    (make-rot-track pi (* 2 pi) 3)
-                    (make-rot-track (* 2 pi) (* 9/4 pi) 3)
+  (make-level (list (make-rot-track (* 3/4 pi) (* 9/4 pi) 3)
 
                     (make-driver 0 -3 'hello))))
 

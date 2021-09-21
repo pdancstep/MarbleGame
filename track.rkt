@@ -142,7 +142,15 @@
        [render (lines `((,x1 ,y1) (,x2 ,y2)) #:width TRACK-PIXELS #:color c)]))
 
 
+(define WIGGLE-ANGLE 0.01)
 (define (make-rot-track θmin θmax r [type '*] #:color [c 'orange])
-  (new arc%
-       [θmin θmin] [θmax θmax] [r r] [type type]
-       [render (polar (λ (θ) r) θmin θmax #:width TRACK-PIXELS #:color c)]))
+  (if (>= θmax (* pi 2))
+      (list (new arc%
+                 [θmin θmin] [θmax (- (* pi 2) WIGGLE-ANGLE)] [r r] [type type]
+                 [render (polar (λ (θ) r) θmin (* pi 2) #:width TRACK-PIXELS #:color c)])
+            (new arc%
+                 [θmin (- (* pi 2) WIGGLE-ANGLE)] [θmax θmax] [r r] [type type]
+                 [render (polar (λ (θ) r) 0 (- θmax (* pi 2)) #:width TRACK-PIXELS #:color c)]))
+      (new arc%
+           [θmin θmin] [θmax θmax] [r r] [type type]
+           [render (polar (λ (θ) r) θmin θmax #:width TRACK-PIXELS #:color c)])))
