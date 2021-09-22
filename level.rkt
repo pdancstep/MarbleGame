@@ -56,12 +56,14 @@
             [new-coords (car new-pos-info)]
             [track-used (cdr new-pos-info)]
             [new-marbles (list-set marbles active-marble (send m move-to new-coords))]
-            [final-marbles (if (send m driver?)
+            [final-marbles (if (or (send m driver?) (send m pusher?))
                                (let ([delta ((send track-used get-inverse) new-coords old-coords)]) ; watch out for divide-by-0
                                  (map (λ (follow) (if (send m drive-pair? follow)
                                                       (let* ([follow-coords (send follow get-coords)]
                                                              [target-coords ((send track-used get-oper) follow-coords delta)]
-                                                             [new-coords (car (closest-allowed-position follow target-coords tracks))])
+                                                             [new-coords (if (send m driver?)
+                                                                             target-coords
+                                                                             (car (closest-allowed-position follow target-coords tracks)))])
                                                         (send follow move-to new-coords))
                                                       follow))
                                       new-marbles))
