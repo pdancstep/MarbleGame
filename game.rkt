@@ -53,7 +53,6 @@
                     (make-goal 2 2.5)
                     (make-vtrack 2 2 2.5))))
 
-
 (define example5
   (make-level (list (make-htrack 1/3 10/3 0)
                     (make-follower 1/3 0)
@@ -63,3 +62,42 @@
                     (make-driver 0 2/3)
                     (make-htrack -1/3 1/3 -1 '+)
                     (make-driver -1/3 -1))))
+
+
+(define lv1 ; basic marble->goal
+  (make-level (list (make-htrack -2 2 0 '+)
+                    (make-goal 2 0 #:color 'lightblue)
+                    (make-marble -2 0 #:color 'darkgreen))))
+
+(define lv2 ; basic driver+follower->goal
+  (make-level (list (make-htrack -2 2 1 '+)
+                    (make-driver -2 1)
+                    
+                    (make-htrack -2 2 -1)
+                    (make-goal 2 -1)
+                    (make-follower -2 -1))))
+
+(define lv3 ; basic double-driver
+  (make-level (list (make-htrack -2 0 2 '+)
+                    (make-goal 0 2 #:color 'lightblue)
+                    (make-driver -2 2)
+
+                    (make-htrack 0 2 -2 '+)
+                    (make-goal 2 -2 #:color 'lightblue)
+                    (make-driver 0 -2)
+                    
+                    (make-htrack -2 2 0)
+                    (make-goal 2 0)
+                    (make-follower -2 0))))
+
+(define lv4 ; basic double driver
+  (make-level (list (make-htrack -2 0 2)
+                    (make-goal 0 2)
+                    (make-follower -2 2)
+
+                    (make-htrack 0 2 -2)
+                    (make-goal 2 -2)
+                    (make-follower 0 -2)
+                    
+                    (make-htrack -2 2 0 '+)
+                    (make-driver -2 0))))
