@@ -5,6 +5,7 @@
          CLICK-TOLERANCE
          normalize-angle
          distance
+         complex-distance
          distance-from-line
          angle-in-degrees)
 
@@ -30,6 +31,7 @@
 
 ; pythagorean distance between 2 points in the plane
 (define (distance x1 y1 x2 y2) (sqrt (+ (sqr (- x1 x2)) (sqr (- y1 y2)))))
+(define (complex-distance z1 z2) (magnitude (- z1 z2)))
 
 ; find smallest distance from (x . y) to the line through (x1 . y1) and (x2 . y2)
 (define (distance-from-line x y x1 y1 x2 y2)

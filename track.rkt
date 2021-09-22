@@ -1,6 +1,6 @@
 #lang racket
 (require plot "utils.rkt")
-(provide track% make-htrack make-vtrack make-linear-track make-rot-track)
+(provide track% make-htrack make-vtrack make-linear-track make-rot-track make-goal)
 
 (define track%
   (class object%
@@ -13,12 +13,14 @@
     (define/public (get-oper)
       (match transform
         ['+ +]
-        ['* *]))
+        ['* *]
+        [else identity]))
     
     (define/public (get-inverse)
       (match transform
         ['+ -]
-        ['* /]))
+        ['* /]
+        [else identity]))
     (define/public (near? z) #f) ; need a specific track type to determine if we're close to a point
     (define/public (suggest-movement source target) #f) ; need track type to suggest any movement
     (define/public (get-render) renderer)))
@@ -125,6 +127,21 @@
           #f))
     ))
 
+(define goal%
+  (class track%
+    (init z render)
+    (super-new [type #f] [render render])
+
+    (define location z)
+
+    (define/override (near? z)
+      (< (complex-distance z location) CLICK-TOLERANCE))
+
+    (define/override (suggest-movement source target)
+      (if (and (near? source))
+          location
+          #f))))
+
 
 (define (make-htrack xmin xmax y [type' +] #:color [c 'lightblue])
   (new linear%
@@ -154,3 +171,6 @@
       (new arc%
            [θmin θmin] [θmax θmax] [r r] [type type]
            [render (polar (λ (θ) r) θmin θmax #:width TRACK-PIXELS #:color c)])))
+
+(define (make-goal x y #:color [c 'gray])
+  (new goal% [z (make-rectangular x y)] [render (points `((,x ,y)) #:sym 'fullcircle #:size (* TRACK-PIXELS 2) #:color c)]))
