@@ -50,8 +50,8 @@
 ; build a driver/pusher marble at location (x,y) with given label
 ; drivers always send the follower marble through the full transformation; pushers only suggest, so followers will stay on tracks
 ; don't yet have the third option: a marble that can ONLY move if its followers can move
-(define (make-driver x y label #:color [c 'darkgreen]) (new marble% [z (make-rectangular x y)] [type (cons 'driver label)] [color c]))
-(define (make-pusher x y label #:color [c 'darkgreen]) (new marble% [z (make-rectangular x y)] [type (cons 'pusher label)] [color c]))
+(define (make-driver x y [label 'default] #:color [c 'darkgreen]) (new marble% [z (make-rectangular x y)] [type (cons 'driver label)] [color c]))
+(define (make-pusher x y [label 'default] #:color [c 'darkgreen]) (new marble% [z (make-rectangular x y)] [type (cons 'pusher label)] [color c]))
 
 ; build a follower marble at location (x,y) with given label
-(define (make-follower x y label #:color [c 'black]) (new marble% [z (make-rectangular x y)] [type (cons 'follower label)] [color c]))
+(define (make-follower x y [label 'default] #:color [c 'black]) (new marble% [z (make-rectangular x y)] [type (cons 'follower label)] [color c]))

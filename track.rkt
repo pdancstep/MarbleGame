@@ -140,34 +140,38 @@
           #f))))
 
 
-(define (make-htrack xmin xmax y [type' +] #:color [c 'lightblue])
-  (new linear%
-       [p1 (make-rectangular xmin y)] [p2 (make-rectangular xmax y)] [type type]
-       [render (lines `((,xmin ,y) (,xmax ,y)) #:width TRACK-PIXELS #:color c)]))
+(define (make-htrack xmin xmax y [type #f] #:color [c #f])
+  (let ([color (or c (match type ['+ 'lightblue] ['* 'orange] [else 'gray]))])
+    (new linear%
+         [p1 (make-rectangular xmin y)] [p2 (make-rectangular xmax y)] [type type]
+         [render (lines `((,xmin ,y) (,xmax ,y)) #:width TRACK-PIXELS #:color color)])))
 
-(define (make-vtrack x ymin ymax [type '+] #:color [c 'lightblue])
-  (new linear%
-       [p1 (make-rectangular x ymin)] [p2 (make-rectangular x ymax)] [type type]
-       [render (lines `((,x ,ymin) (,x ,ymax)) #:width TRACK-PIXELS #:color c)]))
+(define (make-vtrack x ymin ymax [type #f] #:color [c #f])
+  (let ([color (or c (match type ['+ 'lightblue] ['* 'orange] [else 'gray]))])
+    (new linear%
+         [p1 (make-rectangular x ymin)] [p2 (make-rectangular x ymax)] [type type]
+         [render (lines `((,x ,ymin) (,x ,ymax)) #:width TRACK-PIXELS #:color color)])))
 
-(define (make-linear-track x1 y1 x2 y2 [type '+] #:color [c 'lightblue])
-  (new linear%
-       [p1 (make-rectangular x1 y1)] [p2 (make-rectangular x2 y2)] [type type]
-       [render (lines `((,x1 ,y1) (,x2 ,y2)) #:width TRACK-PIXELS #:color c)]))
+(define (make-linear-track x1 y1 x2 y2 [type #f] #:color [c #f])
+  (let ([color (or c (match type ['+ 'lightblue] ['* 'orange] [else 'gray]))])
+    (new linear%
+         [p1 (make-rectangular x1 y1)] [p2 (make-rectangular x2 y2)] [type type]
+         [render (lines `((,x1 ,y1) (,x2 ,y2)) #:width TRACK-PIXELS #:color color)])))
 
 
 (define WIGGLE-ANGLE 0.01)
-(define (make-rot-track θmin θmax r [type '*] #:color [c 'orange])
-  (if (>= θmax (* pi 2))
-      (list (new arc%
-                 [θmin θmin] [θmax (- (* pi 2) WIGGLE-ANGLE)] [r r] [type type]
-                 [render (polar (λ (θ) r) θmin (* pi 2) #:width TRACK-PIXELS #:color c)])
-            (new arc%
-                 [θmin (- (* pi 2) WIGGLE-ANGLE)] [θmax θmax] [r r] [type type]
-                 [render (polar (λ (θ) r) 0 (- θmax (* pi 2)) #:width TRACK-PIXELS #:color c)]))
-      (new arc%
-           [θmin θmin] [θmax θmax] [r r] [type type]
-           [render (polar (λ (θ) r) θmin θmax #:width TRACK-PIXELS #:color c)])))
-
+(define (make-rot-track θmin θmax r [type #f] #:color [c #f])
+  (let ([color (or c (match type ['+ 'lightblue] ['* 'orange] [else 'gray]))])
+    (if (>= θmax (* pi 2))
+        (list (new arc%
+                   [θmin θmin] [θmax (- (* pi 2) WIGGLE-ANGLE)] [r r] [type type]
+                   [render (polar (λ (θ) r) θmin (* pi 2) #:width TRACK-PIXELS #:color color)])
+              (new arc%
+                   [θmin (- (* pi 2) WIGGLE-ANGLE)] [θmax θmax] [r r] [type type]
+                   [render (polar (λ (θ) r) 0 (- θmax (* pi 2)) #:width TRACK-PIXELS #:color color)]))
+        (new arc%
+             [θmin θmin] [θmax θmax] [r r] [type type]
+             [render (polar (λ (θ) r) θmin θmax #:width TRACK-PIXELS #:color color)]))))
+  
 (define (make-goal x y #:color [c 'gray])
   (new goal% [z (make-rectangular x y)] [render (points `((,x ,y)) #:sym 'fullcircle #:size (* TRACK-PIXELS 2) #:color c)]))
