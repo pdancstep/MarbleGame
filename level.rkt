@@ -19,7 +19,7 @@
         (let* ([dist (λ (info)
                        (let ([p (car info)])
                          (if p ; the car of each element of possible-moves is either a point (complex number) or #f
-                             (distance (real-part z) (imag-part z) (real-part p) (imag-part p))
+                             (complex-distance z p)
                              +inf.0)))])
           (argmin dist possible-moves)))))
          

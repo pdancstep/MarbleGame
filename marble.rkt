@@ -9,13 +9,12 @@
     (super-new) ; required
 
     ; fields
-    (define x (real-part z))
-    (define y (imag-part z))
+    (define location z)
     (define mtype type)
     (define mcolor color)
-    (define renderer (points `((,x ,y)) #:sym 'fullcircle #:size MARBLE-PIXELS #:color mcolor))
+    (define renderer (points `((,(real-part z) ,(imag-part z))) #:sym 'fullcircle #:size MARBLE-PIXELS #:color mcolor))
     
-    (define/public (get-coords) (make-rectangular x y))
+    (define/public (get-coords) location)
 
     (define/public (get-render) renderer)
 
@@ -23,7 +22,7 @@
       (new marble% [z p] [type mtype] [color mcolor]))
 
     (define/public (near? z)
-      (< (distance (real-part z) (imag-part z) x y) CLICK-TOLERANCE))
+      (< (complex-distance z location) CLICK-TOLERANCE))
 
     (define/public (get-type) mtype)
     

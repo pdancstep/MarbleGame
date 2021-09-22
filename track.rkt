@@ -30,10 +30,13 @@
     (init p1 p2 type render)
     (super-new [type type] [render render])
 
+    (define z1 p1)
+    (define z2 p2)
     (define x1 (real-part p1))
     (define y1 (imag-part p1))
     (define x2 (real-part p2))
     (define y2 (imag-part p2))
+    
 
     (define slope (let ([dy (- y2 y1)]
                         [dx (- x2 x1)])
@@ -57,12 +60,12 @@
                           (< y (+ (max y1 y2) CLICK-TOLERANCE)))]
           ; point is past left end of track
           [(< x (min x1 x2)) (if (< x1 x2)
-                                 (< (distance x y x1 y1) CLICK-TOLERANCE)
-                                 (< (distance x y x2 y2) CLICK-TOLERANCE))]
+                                 (< (complex-distance z z1) CLICK-TOLERANCE)
+                                 (< (complex-distance z z2) CLICK-TOLERANCE))]
           ; point is past right end of track
           [(< (max x1 x2) x) (if (< x1 x2)
-                                 (< (distance x y x2 y2) CLICK-TOLERANCE)
-                                 (< (distance x y x1 y1) CLICK-TOLERANCE))]
+                                 (< (complex-distance z z2) CLICK-TOLERANCE)
+                                 (< (complex-distance z z1) CLICK-TOLERANCE))]
           ; point is within domain of track
           ; this is still not quite right: closest point on line could be outside line segment
           [else (< (distance-from-line x y x1 y1 x2 y2) CLICK-TOLERANCE)])))
@@ -71,24 +74,19 @@
     ; may want to refine
     (define/override (suggest-movement source target)
       (if (near? source)
-          (let ([new-y (cond
-                         [(< (imag-part target) (min y1 y2)) (min y1 y2)]
-                         [(< (max y1 y2) (imag-part target)) (max y1 y2)]
-                         [else (imag-part target)])])
+          (let* ([x (real-part target)][xmin (min x1 x2)][xmax (max x1 x2)]
+                 [y (imag-part target)][ymin (min y1 y2)][ymax (max y1 y2)]
+                 [new-y (cond [(< y ymin) ymin] [(< ymax y) ymax] [else y])])
             (cond
               ; vertical track
               [(= x1 x2) (make-rectangular x1 new-y)]
               ; high slope: follow y-coordinate
               [(<= 1 (abs slope)) (make-rectangular (as-inverse new-y) new-y)]
               ; low slope: follow x-coordinate
-              [else (let ([new-x (cond
-                                   [(< (real-part target) (min x1 x2)) (min x1 x2)]
-                                   [(< (max x1 x2) (real-part target)) (max x1 x2)]
-                                   [else (real-part target)])])
+              [else (let ([new-x (cond [(< x xmin) xmin] [(< xmax x) xmax] [else x])])
                       (make-rectangular new-x (as-function new-x)))]))
           ; marble is not near this track at all, so we don't want to propose moving it
-          #f))
-    ))
+          #f))))
 
 (define arc%
   (class track%
@@ -106,7 +104,7 @@
       (let* ([r (magnitude z)]
              [θ (cond
                   [(zero? r) 0]
-                  [(and (< (* 2 pi) arc-end) (<= 0 (angle z))) (+ (angle z) (* 2 pi))]
+                  [(< (* 2 pi) arc-end) (+ (angle z) (* 2 pi))]
                   [else (normalize-angle (angle z))])])
         (and (< (abs (- radius r)) CLICK-TOLERANCE)
              (cond 
@@ -116,7 +114,7 @@
 
     (define/override (suggest-movement source target)
       (if (near? source)
-          (let* ([θ (if (and (< (* 2 pi) arc-end) (<= 0 (angle target)))
+          (let* ([θ (if (< (* 2 pi) arc-end)
                         (+ (angle target) (* 2 pi))
                         (normalize-angle (angle target)))])
             (cond
@@ -124,8 +122,7 @@
               [(< arc-end θ) end-point]
               [else (make-polar radius θ)]))
           ; marble is not near this track at all, so we don't want to propose moving it
-          #f))
-    ))
+          #f))))
 
 (define goal%
   (class track%
