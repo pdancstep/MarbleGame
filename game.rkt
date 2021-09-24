@@ -152,6 +152,31 @@
                     (make-driver 1 0)
                     (make-follower 0 3))))
 
+;two goals at once
+(define example9
+  (make-level (list (make-vtrack 0 -1 -3 '*)
+                    
+                    (make-htrack -1 0 2 '+)
+                    (make-vtrack -1 2 3 '+)
+                    (make-vtrack 0 2 3 '+)
+
+                    (make-htrack 0 3 0)
+                    (make-vtrack 0 0 1)
+                    (make-vtrack 3 0 1)
+
+                    (make-htrack -3 -1 0)
+                    (make-vtrack -3 0 1)
+                    (make-vtrack -1 0 1)
+
+                    (make-goal 0 1)
+                    (make-goal -3 1)
+
+                    (make-driver 0 -3)
+                    (make-driver 0 2)
+
+                    (make-follower -3 0 )
+                    (make-follower 3 0 ))))
+
 
 
 (define lv1 ; basic marble->goal
