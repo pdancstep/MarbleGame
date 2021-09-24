@@ -83,6 +83,48 @@
                     (make-driver -.5 -1)
                     (make-follower 0 2.5))))
 
+(define example7
+  (make-level (list (make-htrack -3 -1 .5)
+                    (make-vtrack -1 .5 2.5)
+                    (make-htrack -1 1 2.5)
+                    (make-vtrack 1 2.5 .5)
+                    (make-htrack 1 3 .5)
+                    (make-goal 3 .5)
+
+                    (make-htrack -3.5 -2.5 -2.5 '+)
+                    (make-vtrack -2.5 -1.5 -2.5 '+)
+                    (make-htrack -2.5 -1.5 -1.5 '+)
+                    (make-vtrack -1.5 -1.5 -2.5 '+)
+                    (make-htrack -1.5 -.5 -2.5 '+)
+
+                    (make-htrack 3.5 2.5 -2.5 '+)
+                    (make-vtrack 2.5 -1.5 -2.5 '+)
+                    (make-htrack 2.5 1.5 -1.5 '+)
+                    (make-vtrack 1.5 -1.5 -2.5 '+)
+                    (make-htrack 1.5 .5 -2.5 '+)
+
+                    (make-driver -3.5 -2.5)
+                    (make-driver .5 -2.5)
+                    (make-follower -3 .5))))
+
+(define example8
+  (make-level (list (make-vtrack 0 2 4)
+                    (make-rot-track (* 1/4 pi) (* 1/2 pi) 3)
+                    (make-htrack (* 3 (cos (* 1/4 pi))) (+ 1 (* 3 (cos (* 1/4 pi)))) (* 3 (sin (* 1/4 pi))))
+                    (make-goal (+ 1 (* 3 (cos (* 1/4 pi)))) (* 3 (sin (* 1/4 pi))))
+
+                    (make-vtrack -1 -1 1 '+)
+                    (make-htrack -2 -1 1 '+)
+
+                    (make-vtrack 1 -1 1 '+)
+                    (make-htrack 1 2 1 '+)
+
+                    (make-rot-track (* 5/4 pi) (* 3/2 pi) 3 '*)
+
+                    (make-driver 0 -3)
+                    (make-driver -1 0)
+                    (make-driver 1 0)
+                    (make-follower 0 3))))
 
 
 
