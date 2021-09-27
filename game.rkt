@@ -2,7 +2,29 @@
 (require "components.rkt" "level.rkt"
          "opposing-inputs.rkt" "zero-point.rkt")
 
-; sample change
+
+;pairwise dependencies...
+(define example0
+  (make-level (list (make-vtrack -2 3.5 1.5 '+)
+                    (make-vtrack 0 3.5 1.5 '+)
+                    (make-vtrack 2 3.5 1.5 '+)
+
+                    (make-vtrack -2 .5 -3.5)
+                    (make-vtrack 0 .5 -3.5)
+                    (make-vtrack 2 .5 -3.5)
+
+                    (make-goal -2 -1.5)
+                    (make-goal 0 -1.5)
+                    (make-goal 2 -1.5)
+
+                    (make-driver -2 3.5 'left)
+                    (make-driver 0 3.5 'middle)
+                    (make-driver 2 3.5 'right)
+
+                    (make-follower -2 .5 (cons 'middle 'right))
+                    (make-follower 0 .5 (cons 'left 'right))
+                    (make-follower 2 .5 (cons 'left 'middle)))))
+                    
 
 ;circuitous path
 (define example1
