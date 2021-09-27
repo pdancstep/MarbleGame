@@ -99,3 +99,36 @@
                     (make-driver 1 0)
                     (make-follower 0 3))))
 
+
+;four corners
+(define oppo5
+  (make-level (list (make-vtrack -1.5 3 -3)
+                    (make-htrack -1.5 1.5 1.5)
+
+                    (make-goal 1.5 1.5)
+
+                    
+                    (make-vtrack -3.5 2 3.5 '+)
+                    (make-htrack -3.5 -2 3.5 '+)
+
+                    (make-vtrack -3.5 -2 -3.5 '+)
+                    (make-htrack -3.5 -2 -3.5 '+)
+
+                    (make-vtrack 3.5 -3.5 -2 '+)
+                    (make-htrack 2 3.5 -3.5 '+)
+
+                    (make-vtrack 3.5 2 3.5 '+)
+                    (make-htrack 2 3.5 3.5 '+)
+
+                    (make-driver -3.5 -3.5)
+                    (make-driver -3.5 2)
+                    (make-driver 3.5 2)
+                    (make-driver 3.5 -3.5)
+
+                    (make-follower -1.5 -3))))
+
+                    
+
+
+
+                    
