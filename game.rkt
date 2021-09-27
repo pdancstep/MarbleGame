@@ -29,56 +29,10 @@
                     (make-vtrack 0 -1.85 -2.75 '+)
                     (make-driver 0 -1.85))))
 
-;fixed point puzzle
-(define example3
-  (make-level (list (make-htrack -2.5 2.5 0)
-                    (make-rot-track pi (* 1.25 pi) 2.5)
-                    (make-rot-track (* -.25 pi) 0 2.5)
-                    (make-goal (- (* 2.5 (cos (* 1.25 pi)))) (* 2.5 (sin (* 1.25 pi))))
-                    
-                    (make-rot-track (* pi .375) (* pi .625) 2.5 '*)
-                    (make-htrack -2.5 2.5 -2.5 '+)
 
-                    
-                    (make-driver -2.5 -2.5)
-                    (make-driver (* 2.5 (cos (* .625 pi))) (* 2.5 (sin (* .625 pi))))
-                    (make-follower (* 2.5 (cos (* 1.25 pi))) (* 2.5 (sin (* 1.25 pi)))))))
-
-;cartesian maze
-(define example4
-  (make-level (list (make-vtrack -3 -2 2.5 '+)
-                    (make-driver -3 -2)
-                    (make-htrack -2 2 -3 '+)
-                    (make-driver -2 -3)
-                    
-                    (make-follower -2 -2)
-
-                    (make-htrack -2 1.5 2)
-                    (make-htrack -2 1.5 1)
-                    (make-htrack -2 -1.5 0)
-                    (make-htrack -1 1.5 0)
-                    (make-htrack -1.5 0 -1)
-                    (make-htrack .5 2 -1)
-                    (make-htrack -2 -1.5 -2)
-                    (make-htrack -1 2 -2)
-
-                    (make-vtrack -2 2 -2)
-                    (make-vtrack -1 2 .5)
-                    (make-vtrack -1 0 -.5)
-                    (make-vtrack -1 -1 -2)
-                    (make-vtrack 0 2 1)
-                    (make-vtrack 0 .5 -1)
-                    (make-vtrack 0 -1.5 -2)
-                    (make-vtrack 1 2 1.5)
-                    (make-vtrack 1 1 0)
-                    (make-vtrack 1 -.5 -2)
-                    (make-vtrack 2 2.5 -2)
-
-                    (make-goal 2 2.5)
-                    (make-vtrack 2 2 2.5))))
 
 ;inchworm (solvable in 10 moves)
-(define example5
+(define example3
   (make-level (list (make-htrack 1/3 10/3 0)
                     (make-follower 1/3 0)
                     (make-goal 10/3 0)
@@ -88,28 +42,10 @@
                     (make-htrack -1/3 1/3 -1 '+)
                     (make-driver -1/3 -1))))
 
-;confined follower maze
-(define example6
-  (make-level (list (for/list ([n '(-2 -1 0 1 2)])
-                      (list (make-htrack -2 2 (- n 1) '+) (make-vtrack n -3 1 '+)))
 
-                    (make-htrack -2 -2.5 -3 '+)
-                    (make-goal -2.5 -3 #:color 'lightblue)
-
-                    ;block
-                    (make-htrack -.5 .5 3.5)
-                    (make-htrack -.5 .5 3.15)
-                    (make-htrack -.5 .5 2.85)
-                    (make-htrack -.5 .5 2.5)
-                    (make-vtrack -.5 2.5 3.5)
-                    (make-vtrack .5 2.5 3.5)
-
-                    (make-driver .5 -1)
-                    (make-driver -.5 -1)
-                    (make-follower 0 2.5))))
 
 ;similar paths, half scale
-(define example7
+(define example4
   (make-level (list (make-htrack -3 -1 .5)
                     (make-vtrack -1 .5 2.5)
                     (make-htrack -1 1 2.5)
@@ -135,7 +71,7 @@
 
 
 ;similar paths, quarter scale
-(define example8
+(define example5
   (make-level (list (make-htrack -3 -1 .5)
                     (make-vtrack -1 .5 2.5)
                     (make-htrack -1 1 2.5)
@@ -176,76 +112,13 @@
                     (make-follower -3 .5))))
 
 
-;smiley face?
-(define example9
-  (make-level (list (make-vtrack 0 2 4)
-                    (make-rot-track (* 1/4 pi) (* 1/2 pi) 3)
-                    (make-htrack (* 3 (cos (* 1/4 pi))) (+ 1 (* 3 (cos (* 1/4 pi)))) (* 3 (sin (* 1/4 pi))))
-                    (make-goal (+ 1 (* 3 (cos (* 1/4 pi)))) (* 3 (sin (* 1/4 pi))))
-
-                    (make-vtrack -1 -1 1 '+)
-                    (make-htrack -2 -1 1 '+)
-
-                    (make-vtrack 1 -1 1 '+)
-                    (make-htrack 1 2 1 '+)
-
-                    (make-rot-track (* 5/4 pi) (* 3/2 pi) 3 '*)
-
-                    (make-driver 0 -3)
-                    (make-driver -1 0)
-                    (make-driver 1 0)
-                    (make-follower 0 3))))
-
-;two slugs
-(define example10
-  (make-level (list (make-vtrack 0 -1 -3 '*)
-                    
-                    (make-htrack -1 0 2 '+)
-                    (make-vtrack -1 2 3 '+)
-                    (make-vtrack 0 2 3 '+)
-
-                    (make-htrack 0 3 0)
-                    (make-vtrack 0 0 1)
-                    (make-vtrack 3 0 1)
-
-                    (make-htrack -3 -1 0)
-                    (make-vtrack -3 0 1)
-                    (make-vtrack -1 0 1)
-
-                    (make-goal 0 1)
-                    (make-goal -3 1)
-
-                    (make-driver 0 -3)
-                    (make-driver 0 3)
-
-                    (make-follower -3 1 )
-                    (make-follower 3 1 ))))
 
 
-;two point turnaround
-(define example11
-  (make-level (list (make-rot-track 0 (* 1/2 pi) 2)
-                    (make-rot-track pi (* 3/2 pi) 2)
-                    (make-htrack -2 3 0)
-                    (make-vtrack 0 -2 2)
 
-                    (make-goal 1 0)
-                    (make-goal 3 0)
 
-                    (make-htrack -3 -2 1 '+)
-                    (make-vtrack -3 1 3 '+)
-                    (make-htrack -3 -2 3 '+)
-
-                    (make-rot-track (* 5/4 pi) (* 7/4 pi) 3 '*)
-
-                    (make-follower -1 0)
-                    (make-follower 1 0)
-
-                    (make-driver (* 3 (cos (* 5/4 pi))) (* 3 (sin (* 5/4 pi))))
-                    (make-driver -2 1))))
 
 ;circumferential paths (kinda messy)...
-(define example12
+(define example6
   (make-level (list ;center diamond
                     (make-linear-track 0 1 -1 0 '+)
                     (make-linear-track -1 0 0 -1 '+)
@@ -287,7 +160,7 @@
 
 
 ;pokemon ball maze
-(define example13
+(define example7
   (make-level (list ;orange tracks
                     (make-rot-track (* 3/4 pi) (* 5/4 pi) 3.5 '*)
                     (make-rot-track (* 7/4 pi) (* 9/4 pi) 3.5 '*)
@@ -317,29 +190,7 @@
 
                     (make-follower -.75 0 ))))
 
-;constrained follower #2
-(define example14
-  (make-level (list (make-htrack -1 1 1)
-                    (make-vtrack 1 1 -1)
 
-                    (make-htrack -3 -1 3.5 '+)
-                    (make-vtrack -1 3.5 1.5 '+)
-                    (make-htrack -1 1 1.5 '+)
-                    (make-vtrack 1 1.5 3.5 '+)
-                    (make-htrack 1 3 3.5 '+)
-
-                    (make-htrack -3 -1 -3.5 '+)
-                    (make-vtrack -1 -3.5 -1.5 '+)
-                    (make-htrack -1 1 -1.5 '+)
-                    (make-vtrack 1 -1.5 -3.5 '+)
-                    (make-htrack 1 3 -3.5 '+)
-
-                    (make-goal -3 3.5 #:color 'lightblue)
-                    (make-goal 3 -3.5 #:color 'lightblue)
-
-                    (make-driver 3 3.5)
-                    (make-driver -3 -3.5)
-                    (make-follower 1 1))))
                     
 
                     
