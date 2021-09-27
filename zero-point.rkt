@@ -1,5 +1,6 @@
 #lang racket
 (require "components.rkt" "level.rkt")
+(provide (all-defined-out))
 
 
 ;two point turnaround

@@ -1,5 +1,6 @@
 #lang racket
-(require "components.rkt" "level.rkt")
+(require "components.rkt" "level.rkt"
+         "opposing-inputs.rkt" "zero-point.rkt")
 
 ; sample change
 
