@@ -7,7 +7,8 @@
          distance
          complex-distance
          distance-from-line
-         angle-in-degrees)
+         angle-in-degrees
+         match-labels)
 
 
 (define unit-circle (polar (λ (θ) 1) #:color 'black))
@@ -45,3 +46,9 @@
 (define (angle-in-degrees x y)
   (string-append (number->string (inexact->exact (round (* (/ 180 pi) (normalize-angle (angle (make-rectangular x y)))))))
                  "°"))
+
+; do the arguments have any labels in common?
+(define (match-labels left right)
+  (let ([ls (flatten left)]
+        [rs (flatten right)])
+    (ormap (λ (l) (member l rs)) ls)))

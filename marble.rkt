@@ -42,7 +42,7 @@
     (define/public (drive-pair? m)
       (and (or (driver?) (pusher?))
            (send m follower?)
-           (equal? (cdr mtype) (cdr (send m get-type)))))))
+           (match-labels (cdr mtype) (cdr (send m get-type)))))))
 
 ; build a marble at location (x,y)
 (define (make-marble x y #:color [c 'black]) (new marble% [z (make-rectangular x y)] [type #f] [color c]))
