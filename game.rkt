@@ -286,7 +286,7 @@
                     (make-follower 0 3.5))))
 
 
-;helmut maze
+;pokemon ball maze
 (define example13
   (make-level (list ;orange tracks
                     (make-rot-track (* 3/4 pi) (* 5/4 pi) 3.5 '*)
@@ -316,6 +316,31 @@
                     (make-driver (* 3.5 (cos (* 9/4 pi))) (* 3.5 (sin (* 9/4 pi))))
 
                     (make-follower -.75 0 ))))
+
+;constrained follower #2
+(define example14
+  (make-level (list (make-htrack -1 1 1)
+                    (make-vtrack 1 1 -1)
+
+                    (make-htrack -3 -1 3.5 '+)
+                    (make-vtrack -1 3.5 1.5 '+)
+                    (make-htrack -1 1 1.5 '+)
+                    (make-vtrack 1 1.5 3.5 '+)
+                    (make-htrack 1 3 3.5 '+)
+
+                    (make-htrack -3 -1 -3.5 '+)
+                    (make-vtrack -1 -3.5 -1.5 '+)
+                    (make-htrack -1 1 -1.5 '+)
+                    (make-vtrack 1 -1.5 -3.5 '+)
+                    (make-htrack 1 3 -3.5 '+)
+
+                    (make-goal -3 3.5 #:color 'lightblue)
+                    (make-goal 3 -3.5 #:color 'lightblue)
+
+                    (make-driver 3 3.5)
+                    (make-driver -3 -3.5)
+                    (make-follower 1 1))))
+                    
 
                     
                                        
