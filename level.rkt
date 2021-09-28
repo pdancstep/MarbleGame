@@ -75,7 +75,7 @@
     [else (render-marbles level marbles)]))
 
 ; build a level from a list of components
-(define (make-level components)
+(define (make-level . components)
   (let* ([pieces (flatten components)]
          [tracks (filter track? pieces)]
          [marbles (filter marble? pieces)]

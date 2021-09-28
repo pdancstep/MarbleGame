@@ -90,22 +90,23 @@
 
 (define arc%
   (class track%
-    (init θmin θmax r type render)
+    (init θmin θmax r center type render)
     (super-new [type type] [render render])
 
     (define arc-begin θmin)
     (define arc-end θmax)
     (define radius r)
+    (define circle-center center)
 
-    (define begin-point (make-polar radius arc-begin))
-    (define end-point (make-polar radius arc-end))
+    (define begin-point (+ (make-polar radius arc-begin) center))
+    (define end-point (+ (make-polar radius arc-end) center))
     
     (define/override (near? z)
-      (let* ([r (magnitude z)]
+      (let* ([r (complex-distance z circle-center)]
              [θ (cond
                   [(zero? r) 0]
-                  [(< (* 2 pi) arc-end) (+ (angle z) (* 2 pi))]
-                  [else (normalize-angle (angle z))])])
+                  [(< (* 2 pi) arc-end) (+ (angle (- z circle-center)) (* 2 pi))]
+                  [else (normalize-angle (angle (- z circle-center)))])])
         (and (< (abs (- radius r)) CLICK-TOLERANCE)
              (cond 
                [(< θ arc-begin) (< (- arc-begin θ) CLICK-TOLERANCE)]
@@ -115,12 +116,12 @@
     (define/override (suggest-movement source target)
       (if (near? source)
           (let* ([θ (if (< (* 2 pi) arc-end)
-                        (+ (angle target) (* 2 pi))
-                        (normalize-angle (angle target)))])
+                        (+ (angle (- target circle-center)) (* 2 pi))
+                        (normalize-angle (angle (- target circle-center))))])
             (cond
               [(< θ arc-begin) begin-point]
               [(< arc-end θ) end-point]
-              [else (make-polar radius θ)]))
+              [else (+ (make-polar radius θ) circle-center)]))
           ; marble is not near this track at all, so we don't want to propose moving it
           #f))))
 
@@ -160,18 +161,28 @@
 
 
 (define WIGGLE-ANGLE 0.01)
-(define (make-rot-track θmin θmax r [type #f] #:color [c #f])
-  (let ([color (or c (match type ['+ 'lightblue] ['* 'orange] [else 'gray]))])
+(define (make-rot-track θmin θmax r [type #f] #:color [c #f] #:center [center 0])
+  (let* ([color (or c (match type ['+ 'lightblue] ['* 'orange] [else 'gray]))]
+         [x (real-part center)]
+         [y (imag-part center)]
+         [make-render (λ (min max)
+                        (parametric (λ (t) (list (+ (* r (cos t)) x) (+ (* r (sin t)) y)))
+                                    min max #:width TRACK-PIXELS #:color color))])
     (if (>= θmax (* pi 2))
         (list (new arc%
-                   [θmin θmin] [θmax (- (* pi 2) WIGGLE-ANGLE)] [r r] [type type]
-                   [render (polar (λ (θ) r) θmin (* pi 2) #:width TRACK-PIXELS #:color color)])
+                   [θmin θmin] [θmax (- (* pi 2) WIGGLE-ANGLE)]
+                   [r r] [center center] [type type]
+                   [render (make-render θmin (* pi 2))])
               (new arc%
-                   [θmin (- (* pi 2) WIGGLE-ANGLE)] [θmax θmax] [r r] [type type]
-                   [render (polar (λ (θ) r) 0 (- θmax (* pi 2)) #:width TRACK-PIXELS #:color color)]))
+                   [θmin (- (* pi 2) WIGGLE-ANGLE)] [θmax θmax]
+                   [r r] [center center] [type type]
+                   [render (make-render 0 (- θmax (* pi 2)))]))
         (new arc%
-             [θmin θmin] [θmax θmax] [r r] [type type]
-             [render (polar (λ (θ) r) θmin θmax #:width TRACK-PIXELS #:color color)]))))
+             [θmin θmin] [θmax θmax]
+             [r r] [center center] [type type]
+             [render (make-render θmin θmax)]))))
   
 (define (make-goal x y #:color [c 'gray])
-  (new goal% [z (make-rectangular x y)] [render (points `((,x ,y)) #:sym 'fullcircle #:size (* TRACK-PIXELS 2) #:color c)]))
+  (new goal%
+       [z (make-rectangular x y)]
+       [render (points `((,x ,y)) #:sym 'fullcircle #:size (* TRACK-PIXELS 2) #:color c)]))
