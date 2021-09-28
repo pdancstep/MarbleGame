@@ -56,3 +56,23 @@
                     (make-driver 0 1)
                     (make-driver 0 1.5)
                     (make-follower 0 3.5))))
+
+;enter in reverse
+(define rot3
+  (make-level (list (make-rot-track 0 (* 2 pi) 1.5 #:center -2+2i '+)
+                    (make-rot-track 0 (* 2 pi) 1.5 #:center -2-2i '+)
+
+                    (make-htrack -3.5 2 2 '+)
+                    (make-vtrack .5 2 -2 '+)
+                    (make-vtrack 2 2 -2 '+)
+                    (make-htrack 2 3 -2 '+)
+                    (make-htrack 2 3 -3.5 '+)
+                    (make-rot-track pi (* 3/2 pi) 1.5 #:center 2-2i '+)
+
+                    (make-goal 3 -2 #:color 'lightblue)
+                    (make-goal 3 -3.5 #:color 'lightblue)
+
+                    (make-driver -2 2)
+                    (make-driver -.5 -2)
+                    (make-follower -.5 2))))
+                    
