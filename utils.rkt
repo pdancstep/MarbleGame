@@ -22,7 +22,7 @@
 
 
 ; how close do we need to be to the center of a marble to click it?
-(define CLICK-TOLERANCE 0.08)
+(define CLICK-TOLERANCE 0.12)
 
 (define (normalize-angle θ)
   (cond
