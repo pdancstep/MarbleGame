@@ -14,13 +14,13 @@
       (match transform
         ['+ +]
         ['* *]
-        [else identity]))
+        [else (λ (s d) s)]))
     
     (define/public (get-inverse)
       (match transform
         ['+ -]
         ['* /]
-        [else identity]))
+        [else (λ (s t) 0)]))
     (define/public (near? z) #f) ; need a specific track type to determine if we're close to a point
     (define/public (suggest-movement source target) #f) ; need track type to suggest any movement
     (define/public (get-render) renderer)))

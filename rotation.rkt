@@ -89,4 +89,23 @@
                     (make-follower 0 .75)
                     (make-follower 0 -.75))))
                      
-                    
+                   
+(define rot5
+  (make-level (make-rot-track 0 (* 2 pi) 1 '*)
+              (make-vtrack 3 0 2 '+)
+              (make-goal 2 -2)
+              (make-vtrack 0 1.5 3.5 '*)
+
+              (make-driver 1 0)
+              (make-driver 3 0)
+              (make-driver 0 2.5)
+              
+              (make-follower 2 1)
+              (make-follower -2 1)
+              (make-follower -2 -1)
+              (make-follower 2 -1)
+              
+              (make-follower 1 2)
+              (make-follower 1 -2)
+              (make-follower -1 -2)
+              (make-follower -1 2))) 
