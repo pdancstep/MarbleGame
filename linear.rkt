@@ -103,3 +103,15 @@
                     (make-driver .25 -2.5)
                     (make-driver 2.25 -2.5)
                     (make-follower -3 .5))))
+
+;off-center linear track for multiplier
+(define linear3
+  (make-level (list (make-htrack -3 3 0 '*)
+
+                    (make-driver -3 0)
+
+                    (for/list ([n '(3 2 0 -1 -2 -3)])
+                      (list (make-follower -3 n))))))
+
+
+                    
