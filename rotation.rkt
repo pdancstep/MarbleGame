@@ -75,4 +75,18 @@
                     (make-driver -2 2)
                     (make-driver -.5 -2)
                     (make-follower -.5 2))))
+
+;Off-center circular multiplicative track
+(define rot4
+  (make-level (list (make-rot-track 0 (* 2 pi) 1 #:center -2.5 '*)
+
+                    (make-rot-track 0 (* 2 pi) 1 #:center 2.5)
+                    (make-rot-track 0 (* 2 pi) .5 #:center 0+1.25i)
+                    (make-rot-track 0 (* 2 pi) .5 #:center 0-1.25i)
+
+                    (make-driver -1.5 0)
+                    (make-follower 1.5 0)
+                    (make-follower 0 .75)
+                    (make-follower 0 -.75))))
+                     
                     
