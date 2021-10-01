@@ -55,7 +55,7 @@
             [y (imag-part z)])
         (cond
           ; vertical track
-          [(= x1 x2) (and (< (abs (- x x1)) CLICK-TOLERANCE)
+          [(false? slope) (and (< (abs (- x x1)) CLICK-TOLERANCE)
                           (< (- (min y1 y2) CLICK-TOLERANCE) y)
                           (< y (+ (max y1 y2) CLICK-TOLERANCE)))]
           ; point is past left end of track
@@ -79,7 +79,7 @@
                  [new-y (cond [(< y ymin) ymin] [(< ymax y) ymax] [else y])])
             (cond
               ; vertical track
-              [(= x1 x2) (make-rectangular x1 new-y)]
+              [(false? slope) (make-rectangular x1 new-y)]
               ; high slope: follow y-coordinate
               [(<= 1 (abs slope)) (make-rectangular (as-inverse new-y) new-y)]
               ; low slope: follow x-coordinate
