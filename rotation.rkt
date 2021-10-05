@@ -89,7 +89,7 @@
                     (make-follower 0 .75)
                     (make-follower 0 -.75))))
                      
-                   
+;Swarm control experiment                   
 (define rot5
   (make-level (make-rot-track 0 (* 2 pi) 1 '*)
               (make-vtrack 3 0 2 '+)
@@ -108,4 +108,22 @@
               (make-follower 1 2)
               (make-follower 1 -2)
               (make-follower -1 -2)
-              (make-follower -1 2))) 
+              (make-follower -1 2)))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               
