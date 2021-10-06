@@ -33,11 +33,3 @@
 
                     (make-follower -.75 0 ))))
 
-;off-center linear track for multiplier
-(define scaling3
-  (make-level (list (make-htrack -3 3 3 '*)
-
-                    (make-driver -3 3)
-
-                    (for/list ([n '(1 2 0 -1 -2 -3)])
-                      (list (make-follower -3 n))))))

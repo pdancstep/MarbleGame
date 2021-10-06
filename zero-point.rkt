@@ -66,3 +66,27 @@
                     (make-driver -2.5 -2.5)
                     (make-driver (* 2.5 (cos (* .625 pi))) (* 2.5 (sin (* .625 pi))))
                     (make-follower (* 2.5 (cos (* 1.25 pi))) (* 2.5 (sin (* 1.25 pi)))))))
+
+
+;hexagonal puzzle
+(define zp4
+  (make-level (list (make-linear-track -1.5 0 -.75 1.3)
+                    (make-htrack -.75 .75 1.3)
+                    (make-linear-track .75 1.3 1.5 0)
+                    (make-htrack 0 1.5 0)
+                    (make-linear-track 1.5 0 .75 -1.3)
+                    (make-htrack .75 -.75 -1.3)
+
+                    (make-linear-track -2.5 0 -1.25 2.165 '*)
+                    (make-linear-track 1.25 2.165 2.5 0 '*)
+
+                    (make-htrack -.75 .75 2.165 '+)
+
+                    (make-goal -.75 -1.3)
+
+                    (make-driver -2.5 0)
+                    (make-driver 1.25 2.165)
+
+                    (make-driver -.75 2.165)
+
+                    (make-follower -1.5 0))))

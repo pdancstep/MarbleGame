@@ -25,22 +25,4 @@
                     (make-htrack -1/3 1/3 -1 '+)
                     (make-driver -1/3 -1))))
 
-;Interaction between additive/multiplicative L-shaped paths
-(define ratchet3
-  (make-level (make-vtrack -1 1 -1 '*)
-              (make-htrack -1 1 -1 '*)
-              (make-vtrack 1 1 -1 '+)
-              (make-htrack -1 1 1 '+)
-
-              (make-vtrack -3.5 3.5 -3.5)
-              (make-htrack -3.5 3.5 -3.5)
-              (make-vtrack 3.5 -1.5 -3.5)
-              (make-htrack 1.5 3.5 -1.5)
-              (make-vtrack 1.5 -1.5 1.5)
-              (make-htrack -1.5 1.5 1.5)
-              (make-vtrack -1.5 1.5 3.5)
-              (make-htrack -3.5 -1.5 3.5)
-
-              (make-driver -1 1)
-              (make-follower -3.5 3.5)))
 
