@@ -1,5 +1,5 @@
 #lang racket
-(require "components.rkt" "level.rkt"
+(require "components.rkt" "level.rkt" "principles.rkt"
          "additive.rkt" "opposing-inputs.rkt"
          "rotation.rkt" "scaling.rkt" "zero-point.rkt"
          "ratchet.rkt"
