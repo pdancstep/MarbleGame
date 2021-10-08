@@ -1,11 +1,78 @@
 #lang racket
 (require "components.rkt" "level.rkt"
-         "linear.rkt" "opposing-inputs.rkt"
+         "additive.rkt" "opposing-inputs.rkt"
          "rotation.rkt" "scaling.rkt" "zero-point.rkt"
          "ratchet.rkt"
          "sharing.rkt")
 
-(define arctest
-  (make-level (make-rot-track pi (* 3/2 pi) 2)
-              (make-rot-track pi (* 3/2 pi) 2 #:center 0+2i)
-              (make-rot-track (* 7/4 pi) (* 9/4 pi) 2 #:center 1)))
+
+;ADDITIVE:
+
+;lv1
+;lv2
+;lv3
+;lv4
+;similar1
+;similar2
+
+
+
+
+;ROTATION:
+
+;rot1
+;rot2
+;rot3
+;rot4
+;rot5
+;rot6
+
+
+
+;SCALING
+
+;scaling1
+
+
+
+
+;OPPOSING INPUTS
+
+;oppo1
+;oppo2
+;oppo3
+;oppo4
+;oppo5
+
+
+
+
+;ZERO-POINT
+
+;zp1
+;zp2
+;zp3
+;zp4
+
+
+
+
+
+;RATCHET
+
+;ratchet1
+;ratchet2
+
+
+
+;SHARING
+
+;share1
+
+
+
+
+
+
+
+

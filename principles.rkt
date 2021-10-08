@@ -307,3 +307,21 @@
               (make-driver -1 1)
               (make-follower -3.5 3.5)))
 
+
+
+;Distributive property demonstration?
+
+(define dist
+  (make-level (make-rot-track (* .5 pi) (* 1.5 pi) 1 '+ #:center -2)
+              (make-rot-track (* .5 pi) (* 1.5 pi) .5 '+ #:center -1)
+
+              (make-vtrack 0 -1 -2 '*)
+
+              (make-goal 3 2)
+
+              (make-follower 1.5 0)
+
+              (make-driver -2 -1)
+              (make-driver -1 -.5)
+              (make-driver 0 -1)))
+
