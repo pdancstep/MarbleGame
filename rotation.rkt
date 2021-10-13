@@ -76,18 +76,27 @@
                     (make-driver -.5 -2)
                     (make-follower -.5 2))))
 
-;Off-center circular multiplicative track
+
+;Another orientation/parking problem type level...
 (define rot4
-  (make-level (list (make-rot-track 0 (* 2 pi) 1 #:center -2.5 '*)
+  (make-level (make-rot-track 0 (* 2 pi) 1.5 '+ #:center -2-2i)
 
-                    (make-rot-track 0 (* 2 pi) 1 #:center 2.5)
-                    (make-rot-track 0 (* 2 pi) .5 #:center 0+1.25i)
-                    (make-rot-track 0 (* 2 pi) .5 #:center 0-1.25i)
+              (make-rot-track (* .5 pi) (* 2 pi) 1.5 '+ #:center 2-2i)
+              (make-vtrack .5 -2 2 '+)
+              (make-vtrack 2 -3.5 3.5 '+)
+              (make-htrack .5 2 2 '+)
+              (make-htrack .5 3.5 -2 '+)
 
-                    (make-driver -1.5 0)
-                    (make-follower 1.5 0)
-                    (make-follower 0 .75)
-                    (make-follower 0 -.75))))
+              (make-htrack .5 2 3.5 '+)
+              (make-rot-track (* .5 pi) pi 1.5 '+ #:center .5+2i)
+              (make-vtrack -1 .5 2 '+)
+
+              (make-goal -1 .5 #:color 'lightblue)
+
+              (make-driver -.5 -2)
+              (make-driver .5 2)
+              (make-follower 2 2)))
+
                      
 ;Swarm control experiment                   
 (define rot5
@@ -110,25 +119,7 @@
               (make-follower -1 -2)
               (make-follower -1 2)))
 
-;Another orientation/parking problem type level...
-(define rot6
-  (make-level (make-rot-track 0 (* 2 pi) 1.5 '+ #:center -2-2i)
 
-              (make-rot-track (* .5 pi) (* 2 pi) 1.5 '+ #:center 2-2i)
-              (make-vtrack .5 -2 2 '+)
-              (make-vtrack 2 -3.5 3.5 '+)
-              (make-htrack .5 2 2 '+)
-              (make-htrack .5 3.5 -2 '+)
-
-              (make-htrack .5 2 3.5 '+)
-              (make-rot-track (* .5 pi) pi 1.5 '+ #:center .5+2i)
-              (make-vtrack -1 .5 2 '+)
-
-              (make-goal -1 .5 #:color 'lightblue)
-
-              (make-driver -.5 -2)
-              (make-driver .5 2)
-              (make-follower 2 2)))
 
 
 

@@ -33,3 +33,32 @@
 
                     (make-follower -.75 0 ))))
 
+;wings
+
+(define scaling2
+  (make-level (make-vtrack -2 -3 3 '+)
+              (make-vtrack -1 -3 3 '+)
+              (make-vtrack 0 1 2 '+)
+              (make-vtrack 0 -1 -2 '+)
+
+              (make-htrack -2 -1 3 '+)
+              (make-htrack -2 0 2 '+)
+              (make-htrack -2 -1 1 '+)
+              (make-htrack -2 1 0 '+)
+              (make-htrack -2 -1 -1 '+)
+              (make-htrack -2 0 -2 '+)
+              (make-htrack -2 -1 -3 '+)
+
+              (make-linear-track -2 2 -1 1 '+)
+              (make-linear-track -2 -2 -1 -1 '+)
+
+              (make-goal 0 1 #:color 'lightblue)
+              (make-goal 0 -1 #:color 'lightblue)
+
+              (make-htrack 1.5 3 0 '*)
+
+              (make-driver -2 2)
+              (make-driver 1.5 0)
+
+              (make-follower -2 3)
+              (make-follower -2 1)))
