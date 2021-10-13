@@ -390,8 +390,8 @@
               (make-follower 3 0)))
 
 ;Similar to the last example, but now using rotation instead of scaling. The marble
-;"wants" to move 1.5 units to the horizontally but the available slider moves 1.5 units vertically.
-;But we can effectively move horiztonally by first rotating 90°, applying the slider,
+;"wants" to move 1.5 units horizontally but the available slider moves 1.5 units vertically.
+;But we can effectively move horizontally by first rotating 90°, applying the slider,
 ;and then rotating back 90°.
 
 (define AM3

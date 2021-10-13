@@ -110,6 +110,30 @@
               (make-vtrack 8/3 3/2 2 '+)
               (make-driver 2 3/2 '(big small) #:color 'red)))
 
+(define slideMaze
+  (make-level (make-htrack -2.5 2.5 3 '+)
+              (make-vtrack -2.5 1 3 '+)
+              (make-vtrack -.5 3 -1 '+)
+              (make-vtrack .5 1 3 '+)
+              (make-vtrack 1.5 1 -1 '+)
+              (make-vtrack 2.5 3 -1 '+)
+              (make-htrack -3.5 1.5 1 '+)
+              (make-htrack 2.5 3.5 1 '+)
+              (make-vtrack 1.5 1 -1 '+)
+
+              (make-goal -.5 -1 #:color 'lightblue)
+              (make-goal 1.5 -1 #:color 'lightblue)
+              (make-goal 2.5 -1 #:color 'lightblue)
+
+              (make-htrack -.5 .5 -2.5 '+)
+
+              (make-driver .5 -2.5)
+              (make-driver -2.5 1)
+
+              (make-follower -3.5 1)
+              (make-follower -.5 1)))
+              
+
 
 
 
