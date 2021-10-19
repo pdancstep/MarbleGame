@@ -2,7 +2,7 @@
 (require plot "marble.rkt" "track.rkt")
 
 (provide make-marble make-driver make-follower
-         make-htrack make-vtrack make-linear-track make-rot-track make-goal
+         make-htrack make-vtrack make-linear-track make-rot-track make-goal null-track
          marble? marble-coords nearby-marble
          track? near-track? suggest-move
          get-renderer render-marbles)
@@ -38,6 +38,8 @@
 (define/contract (suggest-move source target track)
   (-> complex? complex? track? (or/c complex? false?))
   (send track suggest-movement source target))
+
+(define null-track (new track% [type #f] [render #f]))
 
 ;;;; marble + track helpers ;;;;
 (define (render/c o) (object/c get-render))

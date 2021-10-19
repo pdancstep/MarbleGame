@@ -15,7 +15,7 @@
          [nearby-tracks (filter ((curry near-track?) current-coords) tracks)]
          [possible-moves (map (λ (t) (cons (suggest-move current-coords z t) t)) nearby-tracks)])
     (if (empty? possible-moves)
-        (cons current-coords #f)
+        (cons current-coords null-track)
         (let* ([dist (λ (info)
                        (let ([p (car info)])
                          (if p ; the car of each element of possible-moves is either a point (complex number) or #f
