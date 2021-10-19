@@ -1,57 +1,53 @@
 #lang racket
 (require plot "utils.rkt")
-(provide marble% make-marble make-driver make-pusher make-follower)
+(provide marble% make-marble make-driver make-follower)
 
 
 (define marble%
   (class object%
-    (init z type color)
+    (init z drv fol color)
     (super-new) ; required
 
     ; fields
     (define location z)
-    (define mtype type)
+    (define drive drv) ; list of labels to drive
+    (define follow fol) ; list of labels to follow
     (define mcolor color)
-    (define renderer (points `((,(real-part z) ,(imag-part z))) #:sym 'fullcircle #:size MARBLE-PIXELS #:color mcolor))
+    (define renderer (points `((,(real-part z) ,(imag-part z)))
+                             #:sym 'fullcircle
+                             #:size MARBLE-PIXELS
+                             #:color mcolor))
     
     (define/public (get-coords) location)
 
     (define/public (get-render) renderer)
 
     (define/public (move-to p)
-      (new marble% [z p] [type mtype] [color mcolor]))
+      (new marble% [z p] [drv drive] [fol follow] [color mcolor]))
 
     (define/public (near? z)
       (< (complex-distance z location) CLICK-TOLERANCE))
 
-    (define/public (get-type) mtype)
-    
-    ; methods for driver/follower marble type
+    ; methods for driver/follower
     (define/public (driver?)
-      (and (pair? mtype)
-           (equal? (car mtype) 'driver)))
-    
-    (define/public (pusher?)
-      (and (pair? mtype)
-           (equal? (car mtype) 'pusher)))
+      (not (empty? drive)))
     
     (define/public (follower?)
-      (and (pair? mtype)
-           (equal? (car mtype) 'follower)))
+      (not (empty? follow)))
+
+    (define/public (get-follow-labels) follow)
     
     (define/public (drive-pair? m)
-      (and (or (driver?) (pusher?))
+      (and (driver?)
            (send m follower?)
-           (match-labels (cdr mtype) (cdr (send m get-type)))))))
+           (match-labels drive (send m get-follow-labels))))))
 
 ; build a marble at location (x,y)
-(define (make-marble x y #:color [c 'black]) (new marble% [z (make-rectangular x y)] [type #f] [color c]))
+(define (make-marble x y #:color [c 'black] #:drive [drv empty] #:follow [fol empty])
+  (new marble% [z (make-rectangular x y)] [drv drv] [fol fol] [color c]))
 
-; build a driver/pusher marble at location (x,y) with given label
-; drivers always send the follower marble through the full transformation; pushers only suggest, so followers will stay on tracks
-; don't yet have the third option: a marble that can ONLY move if its followers can move
-(define (make-driver x y [label 'default] #:color [c 'darkgreen]) (new marble% [z (make-rectangular x y)] [type (cons 'driver label)] [color c]))
-(define (make-pusher x y [label 'default] #:color [c 'darkgreen]) (new marble% [z (make-rectangular x y)] [type (cons 'pusher label)] [color c]))
+; build a driver marble at location (x,y) with given label
+(define (make-driver x y [label 'default] #:color [c 'darkgreen]) (new marble% [z (make-rectangular x y)] [drv (list label)] [fol empty] [color c]))
 
 ; build a follower marble at location (x,y) with given label
-(define (make-follower x y [label 'default] #:color [c 'black]) (new marble% [z (make-rectangular x y)] [type (cons 'follower label)] [color c]))
+(define (make-follower x y [label 'default] #:color [c 'black]) (new marble% [z (make-rectangular x y)] [drv empty] [fol (list label)] [color c]))
