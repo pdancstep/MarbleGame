@@ -5,13 +5,14 @@
 
 (define marble%
   (class object%
-    (init z drv fol color)
+    (init z drv fol usr? color)
     (super-new) ; required
 
     ; fields
     (define location z)
     (define drive drv) ; list of labels to drive
     (define follow fol) ; list of labels to follow
+    (define user-draggable? usr?)
     (define mcolor color)
     (define renderer (points `((,(real-part z) ,(imag-part z)))
                              #:sym 'fullcircle
@@ -22,8 +23,10 @@
 
     (define/public (get-render) renderer)
 
+    (define/public (can-drag?) user-draggable?)
+
     (define/public (move-to p)
-      (new marble% [z p] [drv drive] [fol follow] [color mcolor]))
+      (new marble% [z p] [drv drive] [fol follow] [usr? user-draggable?] [color mcolor]))
 
     (define/public (near? z)
       (< (complex-distance z location) CLICK-TOLERANCE))
@@ -43,11 +46,13 @@
            (match-labels drive (send m get-follow-labels))))))
 
 ; build a marble at location (x,y)
-(define (make-marble x y #:color [c 'black] #:drive [drv empty] #:follow [fol empty])
-  (new marble% [z (make-rectangular x y)] [drv drv] [fol fol] [color c]))
+(define (make-marble x y #:color [c 'black] #:drive [drv empty] #:follow [fol empty] #:draggable [drag (empty? fol)])
+  (new marble% [z (make-rectangular x y)] [drv drv] [fol fol] [usr? drag] [color c]))
 
 ; build a driver marble at location (x,y) with given label
-(define (make-driver x y [label 'default] #:color [c 'darkgreen]) (new marble% [z (make-rectangular x y)] [drv (list label)] [fol empty] [color c]))
+(define (make-driver x y [label 'default] #:color [c 'darkgreen])
+  (new marble% [z (make-rectangular x y)] [drv (list label)] [fol empty] [usr? #t] [color c]))
 
 ; build a follower marble at location (x,y) with given label
-(define (make-follower x y [label 'default] #:color [c 'black]) (new marble% [z (make-rectangular x y)] [drv empty] [fol (list label)] [color c]))
+(define (make-follower x y [label 'default] #:color [c 'black])
+  (new marble% [z (make-rectangular x y)] [drv empty] [fol (list label)] [usr? #f] [color c]))

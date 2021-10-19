@@ -22,13 +22,8 @@
 ; (x . y): coordinate to search
 ; returns: index of found marble in marbles, or #f if none found
 (define (nearby-marble marbles z)
-  (define (check-marbles ms z idx)
-    (if (null? ms)
-        #f
-        (if (send (first ms) near? z)
-            idx
-            (check-marbles (rest ms) z (add1 idx)))))
-  (check-marbles marbles z 0))
+  (let ([near-list (map (λ (m) (send m near? z)) marbles)])
+    (index-of near-list #t)))
 
 ;;;; track helpers ;;;;
 
