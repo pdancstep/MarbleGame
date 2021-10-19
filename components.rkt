@@ -2,9 +2,9 @@
 (require plot "marble.rkt" "track.rkt")
 
 (provide make-marble make-driver make-follower
-         make-htrack make-vtrack make-linear-track make-rot-track make-goal null-track
+         make-htrack make-vtrack make-linear-track make-rot-track make-goal
          marble? marble-coords nearby-marble
-         track? near-track? suggest-move
+         track? near-track? suggest-move null-track along-track?
          get-renderer render-marbles)
 
 ;;;; marble helpers ;;;;
@@ -40,6 +40,17 @@
   (send track suggest-movement source target))
 
 (define null-track (new track% [type #f] [render #f]))
+
+; if z-old and z-new are both near the given track,
+; return a procedure that corresponds to moving from z-old to z-new on that track
+; if not, return #f
+(define/contract (along-track? z-old z-new track)
+  (-> complex? complex? track? (or/c (-> complex? complex?) false?))
+  (if (and (near-track? z-old track) (near-track? z-new track))
+      (let ([delta ((send track get-inverse) z-new z-old)]
+            [op (send track get-oper)])
+        (λ (z) (op z delta)))
+      #f))
 
 ;;;; marble + track helpers ;;;;
 (define (render/c o) (object/c get-render))

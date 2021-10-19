@@ -27,11 +27,21 @@
 ; start = (op oldstart delta)
 ; perform the same transformation to marbles that follow start
 ; return list of (marble . bool), where the bool indicates whether the marble was moved
-(define (drive-movement marbles start op delta)
+(define (drive-movement marbles start transform)
   (map (λ (follow) (if (send start drive-pair? follow)
-                       (cons (send follow move-to (op (send follow get-coords) delta)) #t)
+                       (cons (send follow move-to (transform (send follow get-coords))) #t)
                        (cons follow #f)))
        marbles))
+
+
+(define (find-transform m-old m-new tracks)
+  (let* ([z-old (marble-coords m-old)]
+         [z-new (marble-coords m-new)]
+         [all-transforms (filter identity (map ((curry along-track?) z-old z-new) tracks))])
+    ; what happens if there's more than one possible result?
+    (if (empty? all-transforms)
+        #f
+        (car all-transforms))))
 
 ; respond to mouse input
 ; tracks: list of track elements in the level
@@ -65,7 +75,7 @@
             [track-used (cdr new-pos-info)]
             [new-marbles (list-set marbles active-marble-idx (send active-marble move-to new-coords))]
             [delta ((send track-used get-inverse) new-coords old-coords)] ; watch out for divide-by-0
-            [tagged-marbles (drive-movement new-marbles active-marble (send track-used get-oper) delta)]
+            [tagged-marbles (drive-movement new-marbles active-marble (λ (z) ((send track-used get-oper) z delta)))]
             [final-marbles (map car tagged-marbles)])
        (send level set-mouse-event-callback (build-mouse-handler tracks final-marbles active-marble-idx))
        (render-marbles level final-marbles))]
