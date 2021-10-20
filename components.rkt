@@ -17,11 +17,10 @@
   (-> marble? complex?)
   (send m get-coords))
 
-; look for a marble near a given coordinate position
-; marbles: list? marble%
-; (x . y): coordinate to search
-; returns: index of found marble in marbles, or #f if none found
-(define (nearby-marble marbles z)
+; look for a marble near a given position
+; returns index of found marble, or #f if none found
+(define/contract (nearby-marble marbles z)
+  (-> (*list/c marble?) complex? (or/c exact-nonnegative-integer? false?))
   (let ([near-list (map (λ (m) (send m near? z)) marbles)])
     (index-of near-list #t)))
 
@@ -39,7 +38,9 @@
   (-> complex? complex? track? (or/c complex? false?))
   (send track suggest-movement source target))
 
-(define null-track (new track% [type #f] [render #f]))
+(define/contract null-track
+  track?
+  (new track% [type #f] [render #f]))
 
 ; if z-old and z-new are both near the given track,
 ; return a procedure that corresponds to moving from z-old to z-new on that track

@@ -46,7 +46,7 @@
            (match-labels drive (send m get-follow-labels))))))
 
 ; build a marble at location (x,y)
-(define (make-marble x y #:color [c 'black] #:drive [drv empty] #:follow [fol empty] #:draggable [drag (empty? fol)])
+(define (make-marble x y #:color [c 'darkgreen] #:drive [drv empty] #:follow [fol empty] #:draggable [drag (empty? fol)])
   (new marble% [z (make-rectangular x y)] [drv drv] [fol fol] [usr? drag] [color c]))
 
 ; build a driver marble at location (x,y) with given label

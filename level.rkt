@@ -23,17 +23,18 @@
                              +inf.0)))])
           (argmin dist possible-moves)))))
 
-; starting from the assumption that we transformed the starting marble by
-; start = (op oldstart delta)
+; starting from the assumption that we transformed the starting marble with transform,
 ; perform the same transformation to marbles that follow start
 ; return list of (marble . bool), where the bool indicates whether the marble was moved
-(define (drive-movement marbles start transform)
-  (map (λ (follow) (if (send start drive-pair? follow)
-                       (cons (send follow move-to (transform (send follow get-coords))) #t)
-                       (cons follow #f)))
-       marbles))
+(define (drive-once marbles start transform)
+  (if transform
+      (map (λ (follow) (if (send start drive-pair? follow)
+                           (cons (send follow move-to (transform (send follow get-coords))) #t)
+                           (cons follow #f)))
+           marbles)
+      (map (λ (m) (cons m #f)) marbles)))
 
-
+; given a marble movement and the track list, interpret the movement as a transformation
 (define (find-transform m-old m-new tracks)
   (let* ([z-old (marble-coords m-old)]
          [z-new (marble-coords m-new)]
@@ -42,6 +43,30 @@
     (if (empty? all-transforms)
         #f
         (car all-transforms))))
+
+; tail-recursive function that checks each marble moved by previous drivers and
+; runs that transformation for its own followers.
+; gives an error if it detects a marble being moved by multiple different drivers at once
+(define (iterate-drive prev-marbles curr-marbles moved? tracks)
+  (let ([driver-idx (index-of moved? #t)])
+    (if driver-idx
+        (let* ([driver-prev (list-ref prev-marbles driver-idx)]
+               [driver (list-ref curr-marbles driver-idx)]
+               [next-data (drive-once curr-marbles driver (find-transform driver-prev driver tracks))]
+               [next-marbles (map car next-data)]
+               [next-moved? (map (λ (a b) (if (and a b)
+                                              (error 'drive-graph-is-invalid)
+                                              (or a b)))
+                                 (list-update moved? driver-idx (λ (_) #f))
+                                 (map cdr next-data))])
+          (iterate-drive curr-marbles next-marbles next-moved? tracks))
+        curr-marbles)))
+
+; top level driving procedure
+(define (drive-movement marbles tracks starting-driver transform)
+  (let ([first-iter (drive-once marbles starting-driver transform)])
+    (iterate-drive marbles (map car first-iter) (map cdr first-iter) tracks)))
+         
 
 ; respond to mouse input
 ; tracks: list of track elements in the level
@@ -75,8 +100,7 @@
             [track-used (cdr new-pos-info)]
             [new-marbles (list-set marbles active-marble-idx (send active-marble move-to new-coords))]
             [delta ((send track-used get-inverse) new-coords old-coords)] ; watch out for divide-by-0
-            [tagged-marbles (drive-movement new-marbles active-marble (λ (z) ((send track-used get-oper) z delta)))]
-            [final-marbles (map car tagged-marbles)])
+            [final-marbles (drive-movement new-marbles tracks active-marble (λ (z) ((send track-used get-oper) z delta)))])
        (send level set-mouse-event-callback (build-mouse-handler tracks final-marbles active-marble-idx))
        (render-marbles level final-marbles))]
 
