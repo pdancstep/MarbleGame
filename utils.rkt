@@ -8,7 +8,8 @@
          complex-distance
          distance-from-line
          angle-in-degrees
-         match-labels)
+         match-labels
+         xor-with-error)
 
 
 (define unit-circle (polar (λ (θ) 1) #:color 'black))
@@ -52,3 +53,10 @@
   (let ([ls (flatten left)]
         [rs (flatten right)])
     (ormap (λ (l) (member l rs)) ls)))
+
+; get the non-false value if there is exactly one, throw error if there are multiple
+(define ((xor-with-error err) . ls)
+  (let ([tail (memf identity ls)]) ; find first non-false element
+    (if tail ; did we find one?
+        (if (ormap identity (cdr tail)) (error err) (car tail)) ; rest of list better be false
+        #f)))
