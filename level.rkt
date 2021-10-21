@@ -51,14 +51,16 @@
 ; gives an error if it detects a marble being moved by multiple different drivers at once
 (define (iterate-drive marbles transforms tracks)
   (let ([driver-idx (index-where transforms procedure?)])
-    (if (and driver-idx ; if we have something to drive with
-             (send (list-ref marbles driver-idx) driver?)) ; optimization: only drive drivers
+    (if driver-idx ; if we have something to drive with
         (let* ([next-data (drive-once marbles
                                       (list-ref marbles driver-idx)
                                       (list-ref transforms driver-idx))]
                [next-marbles (map car next-data)]
                [next-transforms (map (make-transform-finder tracks)
-                                     (map cdr next-data)
+                                     ; calculate transformation only when marble
+                                     ; moved AND is a driver of another marble
+                                     (map (λ (p) (and (cdr p) (send (car p) driver?)))
+                                          next-data)
                                      marbles
                                      next-marbles)]
                [merged-transforms (map (xor-warn "Possible cycle in driver/follower graph")
