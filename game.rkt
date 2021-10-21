@@ -117,3 +117,12 @@
               (make-follower 0 -3 'add)
               (make-follower 1 -3 'mult)
               (make-follower 2 -3 'add)))
+
+(define square
+  (make-level (make-rot-track (sub1 (* pi 2)) (* pi 3) 1 '*)
+              (make-rot-track 0 pi 2 '*)
+              (make-rot-track 0 (* pi 2) 3)
+              (make-driver 1 0 'base)
+              (make-marble 2 0 #:drive 'outer #:follow 'base)
+              (make-marble 2 0 #:drive 'outer #:follow 'base)
+              (make-follower 3 0 'outer)))
