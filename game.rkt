@@ -116,8 +116,3 @@
               (make-follower 0 -3 'add)
               (make-follower 1 -3 'mult)
               (make-follower 2 -3 'add)))
-chain2
-
-
-
-

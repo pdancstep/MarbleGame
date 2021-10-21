@@ -42,7 +42,8 @@
              [z-new (marble-coords m-new)]
              [all-transforms (map ((curry along-track?) z-old z-new) tracks)])
         ; what happens if there's more than one possible result?
-        (apply (xor-with-error 'multiple-tracks-claim-secondary-driver) all-transforms))
+        (apply (xor-warn (string-append "Multiple tracks claiming secondary driver " (marble-info m-new)))
+               all-transforms))
       #f))
 
 ; tail-recursive function that checks each marble moved by previous drivers and
@@ -60,7 +61,7 @@
                                      (map cdr next-data)
                                      marbles
                                      next-marbles)]
-               [merged-transforms (map (xor-with-error 'drive-graph-is-invalid)
+               [merged-transforms (map (xor-warn "Possible cycle in driver/follower graph")
                                        (list-update transforms driver-idx not)
                                        next-transforms)])
           (iterate-drive next-marbles merged-transforms tracks))

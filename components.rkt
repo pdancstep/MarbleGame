@@ -1,9 +1,9 @@
 #lang racket
-(require plot "marble.rkt" "track.rkt")
+(require plot "marble.rkt" "track.rkt" "utils.rkt")
 
 (provide make-marble make-driver make-follower
          make-htrack make-vtrack make-linear-track make-rot-track make-goal
-         marble? marble-coords nearby-marble
+         marble? marble-coords nearby-marble marble-info
          track? near-track? suggest-move null-track along-track?
          get-renderer render-marbles)
 
@@ -23,6 +23,13 @@
   (-> (*list/c marble?) complex? (or/c exact-nonnegative-integer? false?))
   (let ([near-list (map (λ (m) (send m near? z)) marbles)])
     (index-of near-list #t)))
+
+(define/contract (marble-info marble #:precision [precision 3])
+  (-> marble? string?)
+  (let ([z (marble-coords marble)])
+    (format "marble at ~a + ~ai"
+            (~r (real-part z) #:precision precision)
+            (~r (imag-part z) #:precision precision))))
 
 ;;;; track helpers ;;;;
 
