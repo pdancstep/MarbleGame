@@ -55,7 +55,8 @@
 (define/contract (along-track? z-old z-new track)
   (-> complex? complex? track? (or/c (-> complex? complex?) false?))
   (if (and (near-track? z-old track) (near-track? z-new track))
-      (let ([delta ((send track get-inverse) z-new z-old)]
+      (let ([delta (with-handlers ([exn:fail:contract:divide-by-zero? (const 0)])
+                     ((send track get-inverse) z-new z-old))]
             [op (send track get-oper)])
         (λ (z) (op z delta)))
       #f))

@@ -105,7 +105,8 @@
             [new-coords (car new-pos-info)]
             [track-used (cdr new-pos-info)]
             [new-marbles (list-set marbles active-marble-idx (send active-marble move-to new-coords))]
-            [delta ((send track-used get-inverse) new-coords old-coords)] ; watch out for divide-by-0
+            [delta (with-handlers ([exn:fail:contract:divide-by-zero? (const 0)])
+                       ((send track-used get-inverse) new-coords old-coords))]
             [final-marbles (drive-movement new-marbles tracks active-marble-idx (λ (z) ((send track-used get-oper) z delta)))])
        (send level set-mouse-event-callback (build-mouse-handler tracks final-marbles active-marble-idx))
        (render-marbles level final-marbles))]

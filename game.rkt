@@ -70,7 +70,8 @@
 
 ;share1
 
-
+; if secondary driver skips over the origin, followers continue normally,
+; but if we stop at exactly 0, followers get stuck at the origin
 (define chain1
   (make-level (make-vtrack -2 -2 2 '+)
               (make-vtrack 0 -2 2 '*)
