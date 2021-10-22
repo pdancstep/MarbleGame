@@ -126,3 +126,109 @@
               (make-marble 2 0 #:drive 'outer #:follow 'base)
               (make-marble 2 0 #:drive 'outer #:follow 'base)
               (make-follower 3 0 'outer)))
+
+
+(define stripes1
+  (make-level (make-htrack -3 -2 -3 '+)
+              (make-htrack -3 -1.8 -2 '+)
+              (make-htrack -3 -1.5 -1 '+)
+              (make-htrack -3 -1 0 '+)
+              (make-htrack -3 0 1 '+)
+              (make-htrack -3 3 2 '+)
+              (make-htrack -3 3 3)
+
+              (make-goal 3 3)
+
+              (make-driver -3 -3 'first)
+              (make-marble -3 -2 #:drive 'second #:follow 'first #:draggable #t)
+              (make-marble -3 -1 #:drive 'third #:follow 'second #:draggable #t)
+              (make-marble -3 0 #:drive 'fourth #:follow 'third #:draggable #t)
+              (make-marble -3 1 #:drive 'fifth #:follow 'fourth #:draggable #t)
+              (make-marble -3 2 #:drive 'sixth #:follow 'fifth #:draggable #t)
+              (make-follower -3 3 (list 'first 'second 'third 'fourth ' fifth 'sixth))))
+
+(define stripes2
+  (make-level (make-htrack -3 -2 -3 '+)
+              (make-htrack -3 -1.8 -2 '+)
+              (make-htrack -3 -1.5 -1 '+)
+              (make-htrack -3 -1 0 '+)
+              (make-htrack -3 0 1 '+)
+              (make-htrack -3 3 2 '+)
+              (make-htrack -3 3 3)
+
+              (make-goal 3 3)
+
+              (make-driver -3 -3 'first)
+              (make-marble -3 -2 #:drive 'second #:follow 'first #:draggable #t)
+              (make-marble -3 -1 #:drive 'third #:follow (list 'first 'second) #:draggable #t)
+              (make-marble -3 0 #:drive 'fourth #:follow (list 'first 'second 'third) #:draggable #t)
+              (make-marble -3 1 #:drive 'fifth #:follow (list 'first 'second 'third 'fourth) #:draggable #t)
+              (make-marble -3 2 #:drive 'sixth #:follow (list 'first 'second 'third 'fourth 'fifth) #:draggable #t)
+              (make-follower -3 3 (list 'first 'second 'third 'fourth ' fifth 'sixth))))
+
+
+(define tugOfWar1
+  (make-level (make-htrack -3 3 -2 '+)
+              (make-htrack -3 3 0 '+)
+              (make-htrack -3 3 2)
+
+              (make-goal 3 2)
+              (make-goal 0 0 #:color 'lightBlue)
+              (make-goal 3 -2 #:color 'lightBlue)
+
+              (make-driver -3 -2 'primary #:color 'red)
+              (make-marble 0 0 #:drive 'secondary #:follow 'primary #:draggable #t #:color 'orange)
+              (make-follower -3 2 (list 'primary 'secondary) #:color 'yellow)))
+
+(define tugOfWar2
+  (make-level (make-htrack -3 3 -2 '+)
+              (make-htrack -3 3 0 '+)
+              (make-htrack -3 3 2)
+
+              (make-goal 0 2)
+              (make-goal -3 0 #:color 'lightBlue)
+              (make-goal 3 -2 #:color 'lightBlue)
+
+              (make-driver -3 -2 'primary #:color 'red)
+              (make-marble 0 0 #:drive 'secondary #:follow 'primary #:draggable #t #:color 'orange)
+              (make-follower -3 2 (list 'primary 'secondary) #:color 'yellow)))
+
+
+(define threeWays
+  (make-level (make-goal 1.5 0)
+              (make-goal 2 0)
+
+              (make-htrack -2 -1 0 '*)
+              (make-htrack -2 -1 -1 '+)
+              (make-htrack -2 -1 -2 '+ #:color 'lightGreen)
+
+              (make-htrack 1 3 0)
+
+              (make-driver -2 -2 'both)
+              (make-marble -2 -1 #:drive 'add #:follow 'both #:draggable #t #:color 'blue)
+              (make-marble -2 0 #:drive 'mult #:follow 'both #:draggable #t #:color 'chocolate)
+              (make-follower 2 0 (list 'add 'mult))))
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
