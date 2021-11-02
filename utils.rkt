@@ -59,6 +59,6 @@
   (let ([tail (memf identity ls)]) ; find first non-false element
     (if tail ; did we find one?
         (begin (when (ormap identity (cdr tail))
-                 (log-error message)) ; rest of list should be false
+                 (log-warning message)) ; rest of list should be false
                (car tail))
         #f)))
