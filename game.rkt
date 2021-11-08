@@ -67,8 +67,14 @@
 
 
 ;SHARING
-
 ;share1
+;share2
+
+
+
+
+
+
 
 ; if secondary driver skips over the origin, followers continue normally,
 ; but if we stop at exactly 0, followers get stuck at the origin
@@ -210,13 +216,24 @@
               (make-follower 2 0 (list 'add 'mult))))
         
 
+(define spirograph
+  (make-level (make-rot-track 0 (* 2 pi) 1 '+)
+              (make-rot-track 0 (* 2 pi) 2 '*)
+
+              (make-driver 2 0 'base)
+              (make-marble 1 0 #:drive 'outer #:follow 'base)
+
+              (make-follower 3 0 (cons 'base 'outer))))
 
 
 
 
 
+              
 
+           
 
+              
 
 
 
