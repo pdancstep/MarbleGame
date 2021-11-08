@@ -63,9 +63,11 @@
                                           next-data)
                                      marbles
                                      next-marbles)]
-               [merged-transforms (map (xor-warn "Possible cycle in driver/follower graph")
-                                       (list-update transforms driver-idx not)
-                                       next-transforms)])
+               [merged-transforms (map (λ (p q) (if (and p q)
+                                                    (compose1 p q)
+                                                    (or p q)))
+                                       next-transforms
+                                       (list-update transforms driver-idx not))])
           (iterate-drive next-marbles merged-transforms tracks))
         marbles)))
 

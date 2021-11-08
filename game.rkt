@@ -214,7 +214,17 @@
               (make-marble -2 -1 #:drive 'add #:follow 'both #:draggable #t #:color 'blue)
               (make-marble -2 0 #:drive 'mult #:follow 'both #:draggable #t #:color 'chocolate)
               (make-follower 2 0 (list 'add 'mult))))
-        
+
+(define algtest
+  (make-level (make-vtrack -3 -3 3 '+)
+              (make-vtrack -1 -3 3 '+)
+              (make-vtrack 1 -3 3 '+)
+              (make-vtrack 3 -3 3 '+)
+              (make-marble -3 -3 #:drive 'A) ; A
+              (make-marble -1 -3 #:drive 'B #:follow 'A) ; B
+              (make-marble 1 -3 #:drive 'C #:follow '(A B)) ; C
+              (make-marble 3 -3 #:follow '(A B C)))) ; D
+
 
 (define spirograph
   (make-level (make-rot-track 0 (* 2 pi) 1 '+)
